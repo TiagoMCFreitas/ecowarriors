@@ -1,7 +1,7 @@
 package com.ecowarriros.modelos;
 
 import java.io.File;
-import java.util.Date;
+import java.sql.Date;
 import com.ecowarriros.Enum.Categoria;
 
 public class Denuncia {
@@ -17,6 +17,7 @@ public class Denuncia {
 
     public Denuncia() {
     }
+    
 
     public Denuncia(String id, File foto, String denunciante, Endereco enderecoIncidente, String descricaoIncidente, Categoria categoria, Date data, String AutorCrime) {
         this.id = id;

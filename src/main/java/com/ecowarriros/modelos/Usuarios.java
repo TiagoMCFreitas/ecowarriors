@@ -7,17 +7,19 @@ public class Usuarios {
     private String senha;
     private String nome;
     private String email;
+    private String tipoUsuario;
     private String telefone;
 
     public Usuarios() {
     }
 
-    public Usuarios(String id, String cpf, String senha, String nome, String email, String telefone) {
+    public Usuarios(String id, String cpf, String senha, String nome, String email, String tipoUsuario, String telefone) {
         this.id = id;
         this.cpf = cpf;
         this.senha = senha;
         this.nome = nome;
         this.email = email;
+        this.tipoUsuario = tipoUsuario;
         this.telefone = telefone;
     }
 
@@ -59,6 +61,14 @@ public class Usuarios {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getTipoUsuario() {
+        return tipoUsuario;
+    }
+
+    public void setTipoUsuario(String tipoUsuario) {
+        this.tipoUsuario = tipoUsuario;
     }
 
     public String getTelefone() {

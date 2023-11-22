@@ -1,6 +1,7 @@
 package com.ecowarriros.modelos;
 
 public class Endereco {
+    private String id;
     private String rua;
     private String bairro;
     private String municipio;
@@ -8,7 +9,8 @@ public class Endereco {
     private String pontoReferencia;
     
     public Endereco(){}
-    public Endereco(String rua, String bairro, String municipio, String CEP, String pontoReferencia){
+    public Endereco(String id, String rua, String bairro, String municipio, String CEP, String pontoReferencia){
+        this.id = id;
         this.rua = rua;
         this.bairro = bairro;
         this.municipio = municipio;
@@ -16,6 +18,14 @@ public class Endereco {
         this.pontoReferencia = pontoReferencia;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
     public String getRua() {
         return rua;
     }
