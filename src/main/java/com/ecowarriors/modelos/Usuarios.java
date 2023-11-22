@@ -1,20 +1,30 @@
-package com.ecowarriros.modelos;
+package com.ecowarriors.modelos;
 
+import com.ecowarriors.Enum.Usuario;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name = "usuarios")  // Nome da tabela no banco de dados
 public class Usuarios {
 
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;  // Se seu ID for autoincrementável, você pode usar Long
     private String cpf;
     private String senha;
     private String nome;
     private String email;
-    private String tipoUsuario;
+    private Usuario tipoUsuario;
     private String telefone;
 
     public Usuarios() {
     }
 
-    public Usuarios(String id, String cpf, String senha, String nome, String email, String tipoUsuario, String telefone) {
-        this.id = id;
+    public Usuarios(String cpf, String senha, String nome, String email, Usuario tipoUsuario, String telefone) {
         this.cpf = cpf;
         this.senha = senha;
         this.nome = nome;
@@ -23,11 +33,12 @@ public class Usuarios {
         this.telefone = telefone;
     }
 
-    public String getId() {
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -63,11 +74,11 @@ public class Usuarios {
         this.email = email;
     }
 
-    public String getTipoUsuario() {
+    public Usuario getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(String tipoUsuario) {
+    public void setTipoUsuario(Usuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 

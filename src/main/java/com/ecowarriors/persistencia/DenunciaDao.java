@@ -1,15 +1,12 @@
-package com.ecowarriros.persistencia;
+package com.ecowarriors.persistencia;
 
-import com.ecowarriros.Ferramentas.ConexaoBD;
+import com.ecowarriors.ferramentas.ConexaoBD;
 import java.util.ArrayList;
-import com.ecowarriros.modelos.Denuncia;
-import com.ecowarriros.persistencia.IDenunciaDao;
+import com.ecowarriors.modelos.Denuncia;
+
 import java.io.FileInputStream;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class DenunciaDao implements IDenunciaDao {
@@ -38,7 +35,7 @@ public class DenunciaDao implements IDenunciaDao {
             st.close();
             
         }catch(Exception erro){
-            System.out.println("Erro no cadastro de denuncia");
+            System.out.println("Erro no cadastro de denuncia " + erro);
         }
     }
             @Override

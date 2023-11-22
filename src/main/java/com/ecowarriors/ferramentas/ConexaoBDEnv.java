@@ -1,9 +1,6 @@
-package com.ecowarriros.ferramentas;
+package com.ecowarriors.ferramentas;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 
 public class ConexaoBDEnv {

@@ -1,4 +1,4 @@
-package com.ecowarriros.Enum;
+package com.ecowarriors.Enum;
 
 public enum Categoria {
     FAUNA,

@@ -1,8 +1,8 @@
-package com.ecowarriros.modelos;
+package com.ecowarriors.modelos;
 
 import java.io.File;
 import java.sql.Date;
-import com.ecowarriros.Enum.Categoria;
+import com.ecowarriors.Enum.Categoria;
 
 public class Denuncia {
 

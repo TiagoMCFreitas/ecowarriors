@@ -1,7 +1,7 @@
-package com.ecowarriros.persistencia;
+package com.ecowarriors.persistencia;
 
 import java.util.ArrayList;
-import com.ecowarriros.modelos.Denuncia;
+import com.ecowarriors.modelos.Denuncia;
 
 public interface IDenunciaDao {
     void cadastroDenuncia(Denuncia denuncia) throws Exception;

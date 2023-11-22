@@ -1,4 +1,4 @@
-package com.ecowarriros.modelos;
+package com.ecowarriors.modelos;
 
 public class Endereco {
     private String id;

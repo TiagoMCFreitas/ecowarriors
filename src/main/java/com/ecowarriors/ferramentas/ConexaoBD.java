@@ -1,4 +1,4 @@
-package com.ecowarriros.Ferramentas;
+package com.ecowarriors.ferramentas;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ public class ConexaoBD {
         try {
             if (conexao == null) {
                 String driver = "org.postgresql.Driver";
-                String url = "jdbc:postgresql://localhost:5433/'banco'";
+                String url = "jdbc:postgresql://localhost:5433/postgres";
                 String user = "postgres";
                 String password = "postgres";
                 Class.forName(driver);

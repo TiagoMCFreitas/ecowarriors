@@ -1,8 +1,7 @@
-package com.ecowarriros.ferramentas;
+package com.ecowarriors.ferramentas;
 
 import java.awt.Component;
 import javax.swing.*;
-import static javax.swing.SwingConstants.CENTER;
 import javax.swing.table.DefaultTableCellRenderer;
 
 public class JTableRenderer extends DefaultTableCellRenderer{
