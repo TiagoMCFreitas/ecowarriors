@@ -1,5 +1,6 @@
 package com.ecowarriors.persistencia;
 
+import com.ecowarriors.Enum.Usuario;
 import com.ecowarriors.modelos.Usuarios;
 import com.ecowarriors.ferramentas.ConexaoBD;
 
@@ -33,6 +34,11 @@ public class UsuarioDao implements IUsuarioDao{
             System.out.println("Erro no cadastro de usuario " + erro);
         }
 
-
+        
+    }
+    public static void main(String[] args) throws Exception {
+        Usuarios usuarios = new Usuarios("70645685194", "teste", "tiago", "tiagomarques@gmail.com", Usuario.GESTOR, "(62)996116051");
+        UsuarioDao dao = new UsuarioDao();
+        dao.cadastrarUsuarios(usuarios);
     }
 }

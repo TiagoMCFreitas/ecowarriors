@@ -7,7 +7,7 @@ import com.ecowarriors.persistencia.UsuarioDao;
 
 public class ValidationClass {
     public static void main(String[] args) throws Exception {
-        Usuarios usuario = new Usuarios("81723123","12345","tiagoM","tiagoM@gmail.com", Usuario.GESTOR,"981555783");
+        Usuarios usuario = new Usuarios("7371727","12345","tiagoM","tiago222@gmail.com", Usuario.GESTOR,"981555783");
         IUsuarioDao usuarioDao = new UsuarioDao();
         usuarioDao.cadastrarUsuarios(usuario);
     }
