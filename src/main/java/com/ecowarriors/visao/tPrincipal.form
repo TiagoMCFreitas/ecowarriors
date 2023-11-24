@@ -157,7 +157,7 @@
           <Color blue="0" green="66" red="0" type="rgb"/>
         </Property>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/com/ecowarriors/visao/icons/voltar.png"/>
+          <Image iconType="3" name="/com/ecowarriors/visao/icons/sairPrograma.png"/>
         </Property>
         <Property name="text" type="java.lang.String" value="  SAIR"/>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
