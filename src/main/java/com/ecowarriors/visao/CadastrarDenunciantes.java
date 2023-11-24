@@ -8,14 +8,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-
 public class CadastrarDenunciantes extends javax.swing.JFrame {
 
     public CadastrarDenunciantes() {
         initComponents();
+        setLocationRelativeTo(null);
+        jTextField1_Senha.setVisible(false);
+        jButton1_ocultarSenha.setVisible(false);
     }
 
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -35,8 +36,11 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
         jFormattedTextField1_Telefone = new javax.swing.JFormattedTextField();
         jFormattedTextField1_CPF = new javax.swing.JFormattedTextField();
         jButton3_cadastrar = new javax.swing.JButton();
-        jLabel9 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jButton1_verSenha = new javax.swing.JButton();
+        jButton1_ocultarSenha = new javax.swing.JButton();
+        jPasswordField1 = new javax.swing.JPasswordField();
+        jLabel9 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -62,7 +66,6 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
         jLabel10.setText("SENHA");
         getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 470, 100, 40));
 
-        jTextField1_Senha.setBackground(new java.awt.Color(255, 255, 255));
         jTextField1_Senha.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_Senha.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_Senha.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
@@ -96,7 +99,6 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
         jLabel2.setText("NOME");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, 90, 40));
 
-        jTextField1_Sobrenome.setBackground(new java.awt.Color(255, 255, 255));
         jTextField1_Sobrenome.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_Sobrenome.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_Sobrenome.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
@@ -107,13 +109,11 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
         });
         getContentPane().add(jTextField1_Sobrenome, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 220, 230, 40));
 
-        jTextField1_Email.setBackground(new java.awt.Color(255, 255, 255));
         jTextField1_Email.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_Email.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_Email.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
         getContentPane().add(jTextField1_Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 420, 590, 40));
 
-        jTextField1_NOME.setBackground(new java.awt.Color(255, 255, 255));
         jTextField1_NOME.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_NOME.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_NOME.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
@@ -124,7 +124,6 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
         });
         getContentPane().add(jTextField1_NOME, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 220, 230, 40));
 
-        jFormattedTextField1_Telefone.setBackground(new java.awt.Color(255, 255, 255));
         jFormattedTextField1_Telefone.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
         jFormattedTextField1_Telefone.setForeground(new java.awt.Color(0, 102, 0));
         try {
@@ -135,7 +134,6 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
         jFormattedTextField1_Telefone.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         getContentPane().add(jFormattedTextField1_Telefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 270, 230, 40));
 
-        jFormattedTextField1_CPF.setBackground(new java.awt.Color(255, 255, 255));
         jFormattedTextField1_CPF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
         jFormattedTextField1_CPF.setForeground(new java.awt.Color(0, 102, 0));
         try {
@@ -146,7 +144,6 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
         jFormattedTextField1_CPF.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         getContentPane().add(jFormattedTextField1_CPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 270, 230, 40));
 
-        jButton3_cadastrar.setBackground(new java.awt.Color(255, 255, 255));
         jButton3_cadastrar.setFont(new java.awt.Font("Serif", 3, 24)); // NOI18N
         jButton3_cadastrar.setForeground(new java.awt.Color(0, 102, 0));
         jButton3_cadastrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/botaoCadastrar.png"))); // NOI18N
@@ -160,11 +157,36 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
         });
         getContentPane().add(jButton3_cadastrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 570, 230, 70));
 
-        jLabel9.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DADOS LOGIN", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 32), new java.awt.Color(0, 102, 0))); // NOI18N
-        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 370, 830, 170));
-
         jLabel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DADOS PESSOAIS", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 32), new java.awt.Color(0, 102, 0))); // NOI18N
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 170, 830, 170));
+
+        jButton1_verSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/verSenha.png"))); // NOI18N
+        jButton1_verSenha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
+        jButton1_verSenha.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1_verSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1_verSenhaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1_verSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 470, 50, 40));
+
+        jButton1_ocultarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/ocultarSenha.png"))); // NOI18N
+        jButton1_ocultarSenha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
+        jButton1_ocultarSenha.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1_ocultarSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1_ocultarSenhaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1_ocultarSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 470, 50, 40));
+
+        jPasswordField1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jPasswordField1.setForeground(new java.awt.Color(0, 102, 0));
+        jPasswordField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
+        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 470, 290, 40));
+
+        jLabel9.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DADOS LOGIN", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 32), new java.awt.Color(0, 102, 0))); // NOI18N
+        getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 370, 830, 170));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1780, 900));
@@ -183,23 +205,34 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1_SobrenomeActionPerformed
 
     private void jButton3_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3_cadastrarActionPerformed
-        if(jTextField1_Email.getText().isEmpty()|| jTextField1_NOME.getText().isEmpty()|| jTextField1_Senha.getText().isEmpty()|| 
-                jTextField1_Sobrenome.getText().isEmpty()){
+        if (jTextField1_Email.getText().isEmpty() || jTextField1_NOME.getText().isEmpty()
+                || jTextField1_Sobrenome.getText().isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "Preencha todos os campos!");
-        }else{
+        } else {
             try {
-                Usuarios usuario = new Usuarios(jFormattedTextField1_CPF.getText(), jTextField1_Senha.getText(),
-                        jTextField1_NOME.getText() + " " + jTextField1_Sobrenome.getText(),
-                        jTextField1_Email.getText(), Usuario.DENUNCIANTE, jFormattedTextField1_Telefone.getText());
-                
-                IUsuarioDao usuarioDao = new UsuarioDao();
-                usuarioDao.cadastrarUsuarios(usuario);
-                JOptionPane.showMessageDialog(rootPane, "usuario Cadastrado!");
-                limparCampos();
+                if (jPasswordField1.getText().isEmpty()) {
+                    Usuarios usuario = new Usuarios(jFormattedTextField1_CPF.getText(), jTextField1_Senha.getText(),
+                            jTextField1_NOME.getText() + " " + jTextField1_Sobrenome.getText(),
+                            jTextField1_Email.getText(), Usuario.DENUNCIANTE, jFormattedTextField1_Telefone.getText());
+
+                    IUsuarioDao usuarioDao = new UsuarioDao();
+                    usuarioDao.cadastrarUsuarios(usuario);
+                    JOptionPane.showMessageDialog(rootPane, "usuario Cadastrado!");
+                    limparCampos();
+                } else if (jTextField1_Senha.getText().isEmpty()) {
+                    Usuarios usuario = new Usuarios(jFormattedTextField1_CPF.getText(), jPasswordField1.getText().toString(),
+                            jTextField1_NOME.getText() + " " + jTextField1_Sobrenome.getText(),
+                            jTextField1_Email.getText(), Usuario.DENUNCIANTE, jFormattedTextField1_Telefone.getText());
+
+                    IUsuarioDao usuarioDao = new UsuarioDao();
+                    usuarioDao.cadastrarUsuarios(usuario);
+                    JOptionPane.showMessageDialog(rootPane, "usuario Cadastrado!");
+                    limparCampos();
+                }
             } catch (Exception ex) {
                 Logger.getLogger(CadastrarDenunciantes.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
     }//GEN-LAST:event_jButton3_cadastrarActionPerformed
 
@@ -207,15 +240,38 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1_NOMEKeyPressed
 
-    public void limparCampos(){
+    private void jButton1_verSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_verSenhaActionPerformed
+        jTextField1_Senha.setVisible(true);
+        jTextField1_Senha.setText(jPasswordField1.getText().toString());
+        jPasswordField1.setVisible(false);
+        jPasswordField1.setText("");
+        jButton1_verSenha.setVisible(false);
+        jButton1_ocultarSenha.setVisible(true);
+    }//GEN-LAST:event_jButton1_verSenhaActionPerformed
+
+    private void jButton1_ocultarSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_ocultarSenhaActionPerformed
+        jPasswordField1.setVisible(true);
+        jPasswordField1.setText(jTextField1_Senha.getText());
+        jTextField1_Senha.setText("");
+        jTextField1_Senha.setVisible(false);
+        jButton1_ocultarSenha.setVisible(false);
+        jButton1_verSenha.setVisible(true);
+    }//GEN-LAST:event_jButton1_ocultarSenhaActionPerformed
+
+    public void limparCampos() {
         jTextField1_Email.setText("");
         jTextField1_NOME.setText("");
         jTextField1_Senha.setText("");
         jTextField1_Sobrenome.setText("");
         jFormattedTextField1_CPF.setText("");
         jFormattedTextField1_Telefone.setText("");
+        jPasswordField1.setText("");
+        jTextField1_Senha.setVisible(false);
+        jPasswordField1.setVisible(true);
+        jButton1_ocultarSenha.setVisible(false);
+        jButton1_verSenha.setVisible(true);
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -252,6 +308,8 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1_ocultarSenha;
+    private javax.swing.JButton jButton1_verSenha;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3_cadastrar;
     private javax.swing.JFormattedTextField jFormattedTextField1_CPF;
@@ -266,6 +324,7 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1_Email;
     private javax.swing.JTextField jTextField1_NOME;
     private javax.swing.JTextField jTextField1_Senha;
