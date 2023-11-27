@@ -131,6 +131,11 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
         jButton3_entrar.setText("    ENTRAR ");
         jButton3_entrar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         jButton3_entrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3_entrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3_entrarActionPerformed(evt);
+            }
+        });
         getContentPane().add(jButton3_entrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 430, 250, 80));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/logoEcoWarriorsTelas.png"))); // NOI18N
@@ -200,6 +205,12 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
         cadastrarDenunciantes.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton3_cadastrarActionPerformed
+
+    private void jButton3_entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3_entrarActionPerformed
+        tLoginDenunciantes loginDenunciante = new tLoginDenunciantes();
+        loginDenunciante.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton3_entrarActionPerformed
 
     /**
      * @param args the command line arguments

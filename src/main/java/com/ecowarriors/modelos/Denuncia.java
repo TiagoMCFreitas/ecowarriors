@@ -7,6 +7,7 @@ import com.ecowarriors.Enum.Categoria;
 public class Denuncia {
 
     private String id;
+    private String protocolo;
     private File foto = new File("");
     private String denuciante;
     private Endereco enderecoIncidente;
@@ -19,8 +20,9 @@ public class Denuncia {
     }
     
 
-    public Denuncia(String id, File foto, String denunciante, Endereco enderecoIncidente, String descricaoIncidente, Categoria categoria, Date data, String AutorCrime) {
+    public Denuncia(String protocolo, File foto, String denunciante, Endereco enderecoIncidente, String descricaoIncidente, Categoria categoria, Date data, String AutorCrime) {
         this.id = id;
+        this.protocolo = protocolo;
         this.foto = foto;
         this.denuciante = denunciante;
         this.enderecoIncidente = enderecoIncidente;
@@ -30,12 +32,28 @@ public class Denuncia {
         this.AutorCrime = AutorCrime;
     }
 
-    public String getId() {
-        return id;
+    public String getProtocolo() {
+        return protocolo;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setProtocolo(String protocolo) {
+        this.protocolo = protocolo;
+    }
+
+    public Endereco getEnderecoIncidente() {
+        return enderecoIncidente;
+    }
+
+    public void setEnderecoIncidente(Endereco enderecoIncidente) {
+        this.enderecoIncidente = enderecoIncidente;
+    }
+
+    public String getDescricaoIncidente() {
+        return descricaoIncidente;
+    }
+
+    public void setDescricaoIncidente(String descricaoIncidente) {
+        this.descricaoIncidente = descricaoIncidente;
     }
 
     public File getFoto() {
@@ -52,22 +70,6 @@ public class Denuncia {
 
     public void setDenuciante(String denuciante) {
         this.denuciante = denuciante;
-    }
-
-    public Endereco getEndereco() {
-        return enderecoIncidente;
-    }
-
-    public void setEndereco(Endereco endereco) {
-        this.enderecoIncidente = endereco;
-    }
-
-    public String getDescricao() {
-        return descricaoIncidente;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricaoIncidente = descricao;
     }
 
     public Categoria getCategoria() {
