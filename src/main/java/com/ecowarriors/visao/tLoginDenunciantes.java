@@ -1,5 +1,7 @@
 package com.ecowarriors.visao;
 
+import com.ecowarriors.modelos.Usuarios;
+import com.ecowarriors.persistencia.UsuarioDao;
 import javax.swing.Timer;
 
 public class tLoginDenunciantes extends javax.swing.JFrame {
@@ -9,6 +11,7 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
         initComponents();
         jTextField1_Senha.setVisible(false);
         jButton1_ocultarSenha.setVisible(false);
+        setLocationRelativeTo(null);
     }
     
     
@@ -48,22 +51,22 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 770, 190, 50));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/logoPrincipall.png"))); // NOI18N
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 0, 310, 300));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(645, 0, 310, 300));
 
         jTextField1_Senha.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_Senha.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_Senha.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
-        getContentPane().add(jTextField1_Senha, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 470, 400, 40));
+        getContentPane().add(jTextField1_Senha, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 470, 400, 40));
 
         jTextField1_Email.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_Email.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_Email.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
-        getContentPane().add(jTextField1_Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 420, 400, 40));
+        getContentPane().add(jTextField1_Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 420, 400, 40));
 
         jPasswordField1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jPasswordField1.setForeground(new java.awt.Color(0, 102, 0));
         jPasswordField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
-        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 470, 400, 40));
+        getContentPane().add(jPasswordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 470, 400, 40));
 
         jButton1_ocultarSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/ocultarSenha.png"))); // NOI18N
         jButton1_ocultarSenha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
@@ -73,7 +76,7 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
                 jButton1_ocultarSenhaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1_ocultarSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 470, 50, 40));
+        getContentPane().add(jButton1_ocultarSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 470, 50, 40));
 
         jButton1_verSenha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/verSenha.png"))); // NOI18N
         jButton1_verSenha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
@@ -83,22 +86,22 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
                 jButton1_verSenhaActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1_verSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 470, 50, 40));
+        getContentPane().add(jButton1_verSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 470, 50, 40));
 
         jLabel10.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(0, 102, 0));
         jLabel10.setText("SENHA");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 470, 100, 40));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 470, 100, 40));
 
         jLabel5.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel5.setText("EMAIL");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 420, 100, 40));
+        jLabel5.setText("USUÁRIO");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 420, 140, 40));
 
         jButton3_entrar.setFont(new java.awt.Font("Serif", 3, 24)); // NOI18N
         jButton3_entrar.setForeground(new java.awt.Color(0, 102, 0));
         jButton3_entrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/entrarDenunciante.png"))); // NOI18N
-        jButton3_entrar.setText("    ENTRAR ");
+        jButton3_entrar.setText("  ENTRAR ");
         jButton3_entrar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         jButton3_entrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton3_entrar.addActionListener(new java.awt.event.ActionListener() {
@@ -106,7 +109,7 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
                 jButton3_entrarActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton3_entrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 530, 210, 70));
+        getContentPane().add(jButton3_entrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 530, 190, 70));
 
         jLabel2.setFont(new java.awt.Font("Serif", 3, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
@@ -148,7 +151,15 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1_verSenhaActionPerformed
 
     private void jButton3_entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3_entrarActionPerformed
-        // TODO add your handling code here:
+        Usuarios usuario = new Usuarios();
+        String nome = "Tiago Marques";
+        usuario.setNome(nome);
+        
+        
+        tUsuarioLogado usuarioLogado = new tUsuarioLogado();
+        usuarioLogado.ExportarDados(usuario);
+        usuarioLogado.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton3_entrarActionPerformed
 
     /**

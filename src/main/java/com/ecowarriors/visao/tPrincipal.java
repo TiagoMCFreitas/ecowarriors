@@ -30,7 +30,7 @@ public class tPrincipal extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(0, 102, 0));
         jLabel2.setText("ANALISTA");
         jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 570, 180, 30));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 550, 180, 30));
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/equipe.png"))); // NOI18N
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
@@ -40,7 +40,7 @@ public class tPrincipal extends javax.swing.JFrame {
                 jLabel4MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 420, 130, 130));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 400, 130, 130));
 
         jLabel5.setFont(new java.awt.Font("Sitka Text", 3, 32)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(0, 102, 0));
@@ -51,15 +51,15 @@ public class tPrincipal extends javax.swing.JFrame {
                 jLabel5MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 570, 260, 30));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 550, 260, 30));
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/blogger.png"))); // NOI18N
         jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
         jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 420, 130, 130));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 400, 130, 130));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/logoPrincipall.png"))); // NOI18N
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 80, 310, 300));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(645, 60, 310, 300));
 
         jButton1.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 102, 0));

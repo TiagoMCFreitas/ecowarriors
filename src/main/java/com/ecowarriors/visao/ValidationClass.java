@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 public class ValidationClass {
 
     public static void main(String[] args) throws Exception {
-        File fis = new File("C:\\Users\\Pichau\\Documents\\github\\ecowarriors\\src\\main\\java\\com\\ecowarriors\\images\\logoEcoWarriorsTelas.png");
+        File fis = new File("./src/main/java/com/ecowarriors/images/logoEcoWarriorsTelas.png");
         
         Endereco endereco = new Endereco("Getulio vargas", "setor andreia", "goiania", "2929292", "viaduto");
 
@@ -33,5 +33,6 @@ public class ValidationClass {
         Denuncia denuncia = new Denuncia("", fis, "Tiago", endereco, "Comeram os mato tudo", Categoria.FLORA, data, "cabecinha");
         IDenunciaDao denunciaDAO = new DenunciaDao();
         denunciaDAO.cadastroDenuncia(denuncia);
+    
     }
 }

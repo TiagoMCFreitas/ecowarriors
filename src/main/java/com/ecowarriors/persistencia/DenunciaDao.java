@@ -24,38 +24,39 @@ public class DenunciaDao implements IDenunciaDao {
         try {
             FileInputStream fis = new FileInputStream(denuncia.getFoto());
 
-            String query = ("insert into Denuncia( protocolo, foto, denunciante, enderecoIncidente, descricaoIncidente, categoria, data, AutorCrime) values (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id");
+            st = conexao.prepareStatement("insert into Denuncia( protocolo, foto, denunciante, endereco_Incidente, descricao_Incidente, categoria, data, Autor_Crime) values (?, ?, ?, ?, ?, ?, ?, ?) RETURNING id");
 
-            st.setString(1, "");
+            st.setString(1, denuncia.getProtocolo());
             st.setBinaryStream(2, fis);
             st.setString(3, denuncia.getDenuciante());
-            st.setString(4, denuncia.getEnderecoIncidente().getBairro() + denuncia.getEnderecoIncidente().getCEP());
+            st.setString(4, denuncia.getEnderecoIncidente().getCEP()+ " " + denuncia.getEnderecoIncidente().getBairro());
             st.setString(5, denuncia.getDescricaoIncidente());
             st.setString(6, denuncia.getCategoria().toString());
             st.setDate(7, denuncia.getData());
             st.setString(8, denuncia.getAutorCrime());
-            
-            try ( ResultSet resultSet = st.executeQuery(query)) {
-                if (resultSet.next()) {
-                    int idSerial = resultSet.getInt(1);
-                    int anoAtual = LocalDate.now().getYear();
-                    String protocolo = String.valueOf(idSerial) + "/" + anoAtual;
-                    System.out.println(idSerial);
-                    
-                    String update = "UPDATE Denuncia SET protocolo = ? WHERE id = ?";
-                    try ( PreparedStatement stUpdate = conexao.prepareStatement(update)) {
-                        stUpdate.setString(1, protocolo);
-                        stUpdate.setInt(2, idSerial);
-                        stUpdate.executeUpdate();
-                    }
+
+            ResultSet resultSet = st.executeQuery();
+            if (resultSet.next()) {
+                int idSerial = resultSet.getInt(1);
+                int anoAtual = LocalDate.now().getYear();
+                String protocolo = String.valueOf(idSerial) + "/" + anoAtual;
+                System.out.println(idSerial);
+
+                String update = "UPDATE Denuncia SET protocolo = ? WHERE id = ?";
+                try ( PreparedStatement stUpdate = conexao.prepareStatement(update)) {
+                    stUpdate.setString(1, protocolo);
+                    stUpdate.setInt(2, idSerial);
+                    stUpdate.executeUpdate();
+
+                } catch (Exception erro) {
+                    System.out.println("Erro no cadastro de denuncia " + erro);
                 }
                 st.close();
-            } catch (Exception erro) {
-                System.out.println("Erro no cadastro de denuncia " + erro);
             }
-        }catch(Exception err){
-            System.out.println(err);
+        } catch (Exception erro) {
+            System.out.println("Erro no cadastro de denuncia " + erro);
         }
+
     }
 
     @Override
