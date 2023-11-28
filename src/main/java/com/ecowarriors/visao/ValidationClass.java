@@ -17,9 +17,8 @@ import java.text.SimpleDateFormat;
 public class ValidationClass {
 
     public static void main(String[] args) throws Exception {
-       Usuarios usuarioTiago = new Usuarios("70559404190","123456","tiago","tiago@gmail.com",Usuario.GESTOR,"62981555783");
        IUsuarioDao usuarioDao = new UsuarioDao();
-       usuarioDao.cadastrarUsuarios(usuarioTiago);
+       usuarioDao.logarUsuarios("705.594.041-90","123455");
 
 
     }

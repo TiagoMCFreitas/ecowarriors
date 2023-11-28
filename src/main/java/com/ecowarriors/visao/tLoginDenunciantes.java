@@ -1,8 +1,11 @@
 package com.ecowarriors.visao;
 
 import com.ecowarriors.modelos.Usuarios;
+import com.ecowarriors.persistencia.IUsuarioDao;
 import com.ecowarriors.persistencia.UsuarioDao;
 import javax.swing.Timer;
+import javax.swing.JOptionPane;
+import java.util.Base64;
 
 public class tLoginDenunciantes extends javax.swing.JFrame {
 
@@ -150,16 +153,34 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
         jButton1_ocultarSenha.setVisible(true);
     }//GEN-LAST:event_jButton1_verSenhaActionPerformed
 
-    private void jButton3_entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3_entrarActionPerformed
-        Usuarios usuario = new Usuarios();
-        String dadoParaPesquisa = jTextField1_Usuario.getText();
-        usuario.setEmail(dadoParaPesquisa);
-        usuario.setCpf(dadoParaPesquisa);
-        
-        tUsuarioLogado usuarioLogado = new tUsuarioLogado();
-        usuarioLogado.ExportarDados(usuario);
-        usuarioLogado.setVisible(true);
-        this.dispose();
+    private void jButton3_entrarActionPerformed(java.awt.event.ActionEvent evt){//GEN-FIRST:event_jButton3_entrarActionPerformed
+        try{
+            IUsuarioDao usuarioDao = new UsuarioDao();
+            String senha = "";
+            if(jTextField1_Senha.getText().isEmpty()){
+                senha = jPasswordField1.getText();
+            }
+            else{
+                senha = jTextField1_Senha.getText();
+            }
+            boolean isLiberado = usuarioDao.logarUsuarios(jTextField1_Usuario.getText(),senha);
+            if(isLiberado){
+                String dadoParaPesquisa = jTextField1_Usuario.getText();
+                tUsuarioLogado usuarioLogado = new tUsuarioLogado();
+                Usuarios usuario = new Usuarios();
+                usuario.setEmail(dadoParaPesquisa);
+                usuario.setCpf(dadoParaPesquisa);
+                usuarioLogado.ExportarDados(usuario);
+                usuarioLogado.setVisible(true);
+                this.dispose();
+            }else{
+                jTextField1_Senha.setText("");
+                jTextField1_Usuario.setText("");
+                jPasswordField1.setText("");
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(this,"Usuario ou senha incorretos");
+        }
     }//GEN-LAST:event_jButton3_entrarActionPerformed
 
     /**

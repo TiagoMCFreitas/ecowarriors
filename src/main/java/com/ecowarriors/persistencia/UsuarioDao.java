@@ -3,6 +3,7 @@ package com.ecowarriors.persistencia;
 import com.ecowarriors.Enum.Usuario;
 import com.ecowarriors.modelos.Usuarios;
 import com.ecowarriors.ferramentas.ConexaoBD;
+import org.postgresql.util.OSUtil;
 
 import java.io.FileInputStream;
 import java.sql.Connection;
@@ -40,9 +41,32 @@ public class UsuarioDao implements IUsuarioDao {
 
     }
 
-    public static void main(String[] args) throws Exception {
-        Usuarios usuarios = new Usuarios("70645685194", "teste", "tiago", "tiagomarques@gmail.com", Usuario.GESTOR, "(62)996116051");
-        UsuarioDao dao = new UsuarioDao();
-        dao.cadastrarUsuarios(usuarios);
+    @Override
+    public boolean logarUsuarios(String usuario, String senha) {
+        try {
+            String sql = "";
+            if(usuario.contains("@")){
+                 sql = "select * from usuarios where email = ?";
+            }else{
+                sql = "select * from usuarios where cpf = ?";
+            }
+            PreparedStatement st = conexao.prepareStatement(sql);
+            st.setString(1,usuario);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String senhaCriptografada = rs.getString("senha");
+                if (new String(Base64.getDecoder().decode(senhaCriptografada)).equals(senha)) {
+                    return true;
+
+                }
+            }
+                return false;
+
+            } catch(SQLException e){
+                throw new RuntimeException(e);
+            }
+
     }
+
+
 }
