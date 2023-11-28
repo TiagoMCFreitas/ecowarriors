@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 
 public class UsuarioDao implements IUsuarioDao {
 
@@ -26,7 +27,7 @@ public class UsuarioDao implements IUsuarioDao {
 
             st = conexao.prepareStatement("insert into usuarios( cpf, senha, nome, email, tipo_do_usuario, telefone) values (?, ?, ?, ?, ?, ?) ");
             st.setString(1, usuario.getCpf());
-            st.setString(2, usuario.getSenha());
+            st.setString(2, Base64.getEncoder().encodeToString(usuario.getSenha().getBytes()));
             st.setString(3, usuario.getNome());
             st.setString(4, usuario.getEmail());
             st.setString(5, usuario.getTipoUsuario().toString());
