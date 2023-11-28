@@ -22,7 +22,7 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
         jTextField1_Senha = new javax.swing.JTextField();
-        jTextField1_Email = new javax.swing.JTextField();
+        jTextField1_Usuario = new javax.swing.JTextField();
         jPasswordField1 = new javax.swing.JPasswordField();
         jButton1_ocultarSenha = new javax.swing.JButton();
         jButton1_verSenha = new javax.swing.JButton();
@@ -58,10 +58,10 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
         jTextField1_Senha.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
         getContentPane().add(jTextField1_Senha, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 470, 400, 40));
 
-        jTextField1_Email.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
-        jTextField1_Email.setForeground(new java.awt.Color(0, 102, 0));
-        jTextField1_Email.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
-        getContentPane().add(jTextField1_Email, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 420, 400, 40));
+        jTextField1_Usuario.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_Usuario.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_Usuario.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
+        getContentPane().add(jTextField1_Usuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 420, 400, 40));
 
         jPasswordField1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jPasswordField1.setForeground(new java.awt.Color(0, 102, 0));
@@ -152,9 +152,9 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
 
     private void jButton3_entrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3_entrarActionPerformed
         Usuarios usuario = new Usuarios();
-        String nome = "Tiago Marques";
-        usuario.setNome(nome);
-        
+        String dadoParaPesquisa = jTextField1_Usuario.getText();
+        usuario.setEmail(dadoParaPesquisa);
+        usuario.setCpf(dadoParaPesquisa);
         
         tUsuarioLogado usuarioLogado = new tUsuarioLogado();
         usuarioLogado.ExportarDados(usuario);
@@ -209,7 +209,7 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1_Email;
     private javax.swing.JTextField jTextField1_Senha;
+    private javax.swing.JTextField jTextField1_Usuario;
     // End of variables declaration//GEN-END:variables
 }

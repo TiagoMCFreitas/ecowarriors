@@ -1,28 +1,44 @@
 package com.ecowarriors.visao;
 
+import com.ecowarriors.ferramentas.ConexaoBD;
 import com.ecowarriors.modelos.Usuarios;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class tUsuarioLogado extends javax.swing.JFrame {
-    
+
+    private Connection conexao = null;
+
     public tUsuarioLogado() {
-        initComponents();
-        setLocationRelativeTo(null);
-        
-        jTextField1_NOME.setEnabled(false);
-        jTextField1_Sobrenome.setEnabled(false);
-        jTextField1_Email.setEnabled(false);
-        jFormattedTextField1_Telefone.setEnabled(false);
-        jFormattedTextField1_CPF.setEnabled(false);
+        try {
+            conexao = ConexaoBD.getConexao();
+            initComponents();
+            setLocationRelativeTo(null);
+
+            jTextField1_nomeCompleto.setEnabled(false);
+            jTextField1_nomeCompleto.setEnabled(false);
+            jTextField1_Email.setEnabled(false);
+            jFormattedTextField1_Telefone.setEnabled(false);
+            jFormattedTextField1_CPF.setEnabled(false);
+        } catch (Exception ex) {
+            Logger.getLogger(tUsuarioLogado.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    public void ExportarDados(Usuarios usuario){
-        jTextField1_NOME.setText(usuario.getNome());
+    public void ExportarDados(Usuarios usuario) {
+        jFormattedTextField1_CPF.setText(usuario.getCpf());
+        jTextField1_Email.setText(usuario.getEmail());
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -36,21 +52,19 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jMenuItem1_PERFIL = new javax.swing.JMenuItem();
         jMenuItem2_SAIR = new javax.swing.JMenuItem();
         jFrame1_perfilUsuario = new javax.swing.JFrame();
-        jLabel11 = new javax.swing.JLabel();
         jFormattedTextField1_CPF = new javax.swing.JFormattedTextField();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jTextField1_NOME = new javax.swing.JTextField();
+        jTextField1_nomeCompleto = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
         jFormattedTextField1_Telefone = new javax.swing.JFormattedTextField();
-        jTextField1_Sobrenome = new javax.swing.JTextField();
         jTextField1_Email = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -90,11 +104,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jPopupMenu1.add(jMenuItem2_SAIR);
 
         jFrame1_perfilUsuario.setUndecorated(true);
-        jFrame1_perfilUsuario.setPreferredSize(new java.awt.Dimension(1600, 900));
         jFrame1_perfilUsuario.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DADOS PESSOAIS", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 32), new java.awt.Color(0, 102, 0))); // NOI18N
-        jFrame1_perfilUsuario.getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 170, 830, 170));
 
         jFormattedTextField1_CPF.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
         jFormattedTextField1_CPF.setForeground(new java.awt.Color(0, 102, 0));
@@ -113,28 +123,23 @@ public class tUsuarioLogado extends javax.swing.JFrame {
 
         jLabel13.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel13.setText("NOME");
-        jFrame1_perfilUsuario.getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 220, 90, 40));
+        jLabel13.setText("NOME COMPLETO");
+        jFrame1_perfilUsuario.getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 220, 250, 40));
 
-        jTextField1_NOME.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
-        jTextField1_NOME.setForeground(new java.awt.Color(0, 102, 0));
-        jTextField1_NOME.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
-        jTextField1_NOME.addKeyListener(new java.awt.event.KeyAdapter() {
+        jTextField1_nomeCompleto.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_nomeCompleto.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_nomeCompleto.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
+        jTextField1_nomeCompleto.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField1_NOMEKeyPressed(evt);
+                jTextField1_nomeCompletoKeyPressed(evt);
             }
         });
-        jFrame1_perfilUsuario.getContentPane().add(jTextField1_NOME, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 220, 230, 40));
+        jFrame1_perfilUsuario.getContentPane().add(jTextField1_nomeCompleto, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 220, 440, 40));
 
         jLabel14.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(0, 102, 0));
         jLabel14.setText("TELEFONE");
         jFrame1_perfilUsuario.getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 270, 150, 40));
-
-        jLabel15.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel15.setText("SOBRENOME");
-        jFrame1_perfilUsuario.getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 220, 180, 40));
 
         jFormattedTextField1_Telefone.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 153, 153), 3));
         jFormattedTextField1_Telefone.setForeground(new java.awt.Color(0, 102, 0));
@@ -145,16 +150,6 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         }
         jFormattedTextField1_Telefone.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jFrame1_perfilUsuario.getContentPane().add(jFormattedTextField1_Telefone, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 270, 230, 40));
-
-        jTextField1_Sobrenome.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
-        jTextField1_Sobrenome.setForeground(new java.awt.Color(0, 102, 0));
-        jTextField1_Sobrenome.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 153, 153), 3, true));
-        jTextField1_Sobrenome.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1_SobrenomeActionPerformed(evt);
-            }
-        });
-        jFrame1_perfilUsuario.getContentPane().add(jTextField1_Sobrenome, new org.netbeans.lib.awtextra.AbsoluteConstraints(980, 220, 230, 40));
 
         jTextField1_Email.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_Email.setForeground(new java.awt.Color(0, 102, 0));
@@ -191,12 +186,14 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         });
         jFrame1_perfilUsuario.getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 770, 190, 50));
 
+        jLabel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DADOS PESSOAIS", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 32), new java.awt.Color(0, 102, 0))); // NOI18N
+        jFrame1_perfilUsuario.getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 170, 830, 170));
+
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
         jFrame1_perfilUsuario.getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1600, 900));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/consultarDenuncia.png"))); // NOI18N
@@ -223,6 +220,11 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/novaDenuncia.png"))); // NOI18N
         jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
         jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+        });
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 320, 135, 140));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/logoPrincipall.png"))); // NOI18N
@@ -232,6 +234,11 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(0, 102, 0));
         jLabel3.setText("NOVA DENÚNCIA");
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 470, 290, 30));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/usuarioLogadoFundoPreto.png"))); // NOI18N
@@ -277,37 +284,86 @@ public class tUsuarioLogado extends javax.swing.JFrame {
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         jLabel2.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (SwingUtilities.isLeftMouseButton(e)) {
-                        // Exibe o JPopupMenu no local onde o mouse foi pressionado
-                        jPopupMenu1.show(e.getComponent(), e.getX(), e.getY());
-                    }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // Exibe o JPopupMenu no local onde o mouse foi pressionado
+                    jPopupMenu1.show(e.getComponent(), e.getX(), e.getY());
                 }
-            });
+            }
+        });
     }//GEN-LAST:event_jLabel2MouseClicked
 
     private void jMenuItem1_PERFILActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1_PERFILActionPerformed
-        jFrame1_perfilUsuario.setVisible(true);
-        jFrame1_perfilUsuario.setBounds(WIDTH, WIDTH, 1600, 900);
-        jFrame1_perfilUsuario.setLocationRelativeTo(null);
-        this.setVisible(false);
+        try {
+
+            jFrame1_perfilUsuario.setVisible(true);
+            jFrame1_perfilUsuario.setBounds(WIDTH, WIDTH, 1600, 900);
+            jFrame1_perfilUsuario.setLocationRelativeTo(null);
+            this.setVisible(false);
+            buscarDadosUsuarioLogado();
+            BuscarDadosUsuarioEmail();
+        } catch (SQLException ex) {
+            Logger.getLogger(tUsuarioLogado.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem1_PERFILActionPerformed
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
         jLabel9.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (SwingUtilities.isLeftMouseButton(e)) {
-                        // Exibe o JPopupMenu no local onde o mouse foi pressionado
-                        jPopupMenu1.show(e.getComponent(), e.getX(), e.getY());
-                    }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    // Exibe o JPopupMenu no local onde o mouse foi pressionado
+                    jPopupMenu1.show(e.getComponent(), e.getX(), e.getY());
                 }
-            });
+            }
+        });
     }//GEN-LAST:event_jLabel9MouseClicked
 
+    public void buscarDadosUsuarioLogado() throws SQLException {
+        String cpf = jFormattedTextField1_CPF.getText();
+        String sql = "SELECT * from usuarios where cpf = ?";
+        try ( PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+            preparedStatement.setString(1, cpf);
+            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String nome = resultSet.getString("nome");
+                    jTextField1_nomeCompleto.setText(nome);
+                    String email = resultSet.getString("email");
+                    jTextField1_Email.setText(email);
+                    String telefone = resultSet.getString("telefone");
+                    jFormattedTextField1_Telefone.setText(telefone);
+                } else {
+
+                }
+            }
+        }
+    }
+
+    public void BuscarDadosUsuarioEmail() throws SQLException {
+        String email = jTextField1_Email.getText();
+        String sql = "SELECT * from usuarios where EMAIL = ?";
+        try ( PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+            preparedStatement.setString(1, email);
+            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    String nome = resultSet.getString("nome");
+                    jTextField1_nomeCompleto.setText(nome);
+                    String emailL = resultSet.getString("email");
+                    jTextField1_Email.setText(emailL);
+                    String cpf = resultSet.getString("cpf");
+                    jFormattedTextField1_CPF.setText(cpf);
+                    String telefone = resultSet.getString("telefone");
+                    jFormattedTextField1_Telefone.setText(telefone);
+                } else {
+
+                }
+            }
+        }
+    }
+
     private void jMenuItem2_SAIRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2_SAIRMouseClicked
-        
+
     }//GEN-LAST:event_jMenuItem2_SAIRMouseClicked
 
     private void jMenuItem2_SAIRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2_SAIRActionPerformed
@@ -316,18 +372,26 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jMenuItem2_SAIRActionPerformed
 
-    private void jTextField1_NOMEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1_NOMEKeyPressed
+    private void jTextField1_nomeCompletoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1_nomeCompletoKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1_NOMEKeyPressed
-
-    private void jTextField1_SobrenomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1_SobrenomeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1_SobrenomeActionPerformed
+    }//GEN-LAST:event_jTextField1_nomeCompletoKeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         jFrame1_perfilUsuario.dispose();
         this.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        tCadastroDenuncia cadastroDenuncia = new tCadastroDenuncia();
+        cadastroDenuncia.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        tCadastroDenuncia cadastroDenuncia = new tCadastroDenuncia();
+        cadastroDenuncia.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel6MouseClicked
 
     /**
      * @param args the command line arguments
@@ -343,16 +407,24 @@ public class tUsuarioLogado extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(tUsuarioLogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tUsuarioLogado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(tUsuarioLogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tUsuarioLogado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(tUsuarioLogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tUsuarioLogado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(tUsuarioLogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tUsuarioLogado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -375,7 +447,6 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
@@ -392,7 +463,6 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2_SAIR;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JTextField jTextField1_Email;
-    private javax.swing.JTextField jTextField1_NOME;
-    private javax.swing.JTextField jTextField1_Sobrenome;
+    private javax.swing.JTextField jTextField1_nomeCompleto;
     // End of variables declaration//GEN-END:variables
 }
