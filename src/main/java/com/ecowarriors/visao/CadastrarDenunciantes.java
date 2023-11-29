@@ -1,6 +1,7 @@
 package com.ecowarriors.visao;
 
 import com.ecowarriors.Enum.Usuario;
+import com.ecowarriors.ferramentas.limitaCaracteres;
 import com.ecowarriors.modelos.Usuarios;
 import com.ecowarriors.persistencia.IUsuarioDao;
 import com.ecowarriors.persistencia.UsuarioDao;
@@ -15,6 +16,9 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         jTextField1_Senha.setVisible(false);
         jButton1_ocultarSenha.setVisible(false);
+        
+        jTextField1_NOME.setDocument(new limitaCaracteres(30, limitaCaracteres.tipoEntrada.NOME));
+        jTextField1_Sobrenome.setDocument(new limitaCaracteres(30, limitaCaracteres.tipoEntrada.NOME));
     }
 
     @SuppressWarnings("unchecked")
@@ -209,9 +213,10 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
                 || jTextField1_Sobrenome.getText().isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "Preencha todos os campos!");
         } else {
+            String cpfFormatado = jFormattedTextField1_CPF.getText().replace(".", "").replace("-", "");
             try {
                 if (jPasswordField1.getText().isEmpty()) {
-                    Usuarios usuario = new Usuarios(jFormattedTextField1_CPF.getText(), jTextField1_Senha.getText(),
+                    Usuarios usuario = new Usuarios(cpfFormatado, jTextField1_Senha.getText(),
                             jTextField1_NOME.getText() + " " + jTextField1_Sobrenome.getText(),
                             jTextField1_Email.getText(), Usuario.DENUNCIANTE, jFormattedTextField1_Telefone.getText());
 
@@ -220,7 +225,7 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(rootPane, "usuario Cadastrado!");
                     limparCampos();
                 } else if (jTextField1_Senha.getText().isEmpty()) {
-                    Usuarios usuario = new Usuarios(jFormattedTextField1_CPF.getText(), jPasswordField1.getText().toString(),
+                    Usuarios usuario = new Usuarios(cpfFormatado, jPasswordField1.getText().toString(),
                             jTextField1_NOME.getText() + " " + jTextField1_Sobrenome.getText(),
                             jTextField1_Email.getText(), Usuario.DENUNCIANTE, jFormattedTextField1_Telefone.getText());
 

@@ -169,7 +169,6 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
                 tUsuarioLogado usuarioLogado = new tUsuarioLogado();
                 Usuarios usuario = new Usuarios();
                 usuario.setEmail(dadoParaPesquisa);
-                usuario.setCpf(dadoParaPesquisa);
                 usuarioLogado.ExportarDados(usuario);
                 usuarioLogado.setVisible(true);
                 this.dispose();

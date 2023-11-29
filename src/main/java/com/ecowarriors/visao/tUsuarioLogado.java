@@ -35,7 +35,6 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     }
 
     public void ExportarDados(Usuarios usuario) {
-        jFormattedTextField1_CPF.setText(usuario.getCpf());
         jTextField1_Email.setText(usuario.getEmail());
     }
 
@@ -271,15 +270,11 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
-        tCadastroDenunciante denunciante = new tCadastroDenunciante();
-        denunciante.setVisible(true);
-        this.dispose();
+        
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-        tCadastroDenunciante denunciante = new tCadastroDenunciante();
-        denunciante.setVisible(true);
-        this.dispose();
+       
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -321,7 +316,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel9MouseClicked
 
     public void buscarDadosUsuarioLogado() throws SQLException {
-        String cpf = jFormattedTextField1_CPF.getText();
+        String cpf = jTextField1_Email.getText();
         String sql = "SELECT * from usuarios where cpf = ?";
         try ( PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
             preparedStatement.setString(1, cpf);
@@ -332,6 +327,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
                     String email = resultSet.getString("email");
                     jTextField1_Email.setText(email);
                     String telefone = resultSet.getString("telefone");
+                    jFormattedTextField1_CPF.setText(cpf);
                     jFormattedTextField1_Telefone.setText(telefone);
                 } else {
 
@@ -367,8 +363,8 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2_SAIRMouseClicked
 
     private void jMenuItem2_SAIRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2_SAIRActionPerformed
-        tCadastroDenunciante cadastroDenunciante = new tCadastroDenunciante();
-        cadastroDenunciante.setVisible(true);
+        tLoginDenunciantes loginDenunciante = new tLoginDenunciantes();
+        loginDenunciante.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jMenuItem2_SAIRActionPerformed
 
