@@ -36,11 +36,13 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
 
         jFrame1_telaAnonima = new javax.swing.JFrame();
         jLabel8 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jFormattedTextField1_CEP = new javax.swing.JFormattedTextField();
         jLabel14 = new javax.swing.JLabel();
         jTextField1_Municipios = new javax.swing.JTextField();
+        jTextField1_DescricaoIncidente = new javax.swing.JTextField();
         jTextField1_pontoReferencia = new javax.swing.JTextField();
         jTextField1_rua = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
@@ -50,6 +52,7 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jLabel16 = new javax.swing.JLabel();
         jTextField1_bairro = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -73,13 +76,18 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/logoEcoWarriorsTelas.png"))); // NOI18N
         jFrame1_telaAnonima.getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(1370, 20, 200, 200));
 
+        jLabel18.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel18.setText("DESCRIÇÃO");
+        jFrame1_telaAnonima.getContentPane().add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 510, 340, 30));
+
         jLabel9.setFont(new java.awt.Font("Serif", 3, 36)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(0, 102, 0));
         jLabel9.setText("DENÚNCIA ANÔNIMA");
-        jFrame1_telaAnonima.getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 70, 400, 50));
+        jFrame1_telaAnonima.getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 400, 50));
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/tAnonima.png"))); // NOI18N
-        jFrame1_telaAnonima.getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 70, 50, 50));
+        jFrame1_telaAnonima.getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 40, 50, 50));
 
         jFormattedTextField1_CEP.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
         jFormattedTextField1_CEP.setForeground(new java.awt.Color(0, 102, 0));
@@ -89,27 +97,32 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         jFormattedTextField1_CEP.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
-        jFrame1_telaAnonima.getContentPane().add(jFormattedTextField1_CEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 230, 190, 40));
+        jFrame1_telaAnonima.getContentPane().add(jFormattedTextField1_CEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 170, 190, 40));
 
         jLabel14.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(0, 102, 0));
         jLabel14.setText("RUA");
-        jFrame1_telaAnonima.getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 330, 60, 40));
+        jFrame1_telaAnonima.getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 270, 60, 40));
 
         jTextField1_Municipios.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_Municipios.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_Municipios.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_telaAnonima.getContentPane().add(jTextField1_Municipios, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 380, 340, 40));
+        jFrame1_telaAnonima.getContentPane().add(jTextField1_Municipios, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 320, 340, 40));
+
+        jTextField1_DescricaoIncidente.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_DescricaoIncidente.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_DescricaoIncidente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jFrame1_telaAnonima.getContentPane().add(jTextField1_DescricaoIncidente, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 540, 580, 40));
 
         jTextField1_pontoReferencia.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_pontoReferencia.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_pontoReferencia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_telaAnonima.getContentPane().add(jTextField1_pontoReferencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 460, 580, 40));
+        jFrame1_telaAnonima.getContentPane().add(jTextField1_pontoReferencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 400, 580, 40));
 
         jTextField1_rua.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_rua.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_rua.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_telaAnonima.getContentPane().add(jTextField1_rua, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 330, 340, 40));
+        jFrame1_telaAnonima.getContentPane().add(jTextField1_rua, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 270, 340, 40));
 
         jButton3.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jButton3.setForeground(new java.awt.Color(0, 102, 0));
@@ -127,17 +140,17 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(0, 102, 0));
         jLabel15.setText("PONTO DE REFERÊNCIA");
-        jFrame1_telaAnonima.getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 430, 340, 30));
+        jFrame1_telaAnonima.getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 370, 340, 30));
 
         jLabel13.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(0, 102, 0));
         jLabel13.setText("BAIRRO");
-        jFrame1_telaAnonima.getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 280, 120, 40));
+        jFrame1_telaAnonima.getContentPane().add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 220, 120, 40));
 
         jLabel12.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(0, 102, 0));
         jLabel12.setText("CEP");
-        jFrame1_telaAnonima.getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 230, 70, 40));
+        jFrame1_telaAnonima.getContentPane().add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 170, 70, 40));
 
         jButton1.setFont(new java.awt.Font("Serif", 3, 22)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 102, 0));
@@ -150,20 +163,23 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jFrame1_telaAnonima.getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 230, 140, 40));
+        jFrame1_telaAnonima.getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 170, 140, 40));
 
         jLabel16.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(0, 102, 0));
         jLabel16.setText("MUNICIPIO");
-        jFrame1_telaAnonima.getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 380, 160, 40));
+        jFrame1_telaAnonima.getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, 160, 40));
 
         jTextField1_bairro.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_bairro.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_bairro.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_telaAnonima.getContentPane().add(jTextField1_bairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 280, 340, 40));
+        jFrame1_telaAnonima.getContentPane().add(jTextField1_bairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 220, 340, 40));
 
-        jLabel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "ENDEREÇO DO INCIDENTE", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 24), new java.awt.Color(0, 102, 0))); // NOI18N
-        jFrame1_telaAnonima.getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 180, 620, 340));
+        jLabel17.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "ENDEREÇO DO INCIDENTE", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 24), new java.awt.Color(0, 102, 0))); // NOI18N
+        jFrame1_telaAnonima.getContentPane().add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 120, 620, 340));
+
+        jLabel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DADOS DO INCIDENTE", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 24), new java.awt.Color(0, 102, 0))); // NOI18N
+        jFrame1_telaAnonima.getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 470, 620, 260));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
         jFrame1_telaAnonima.getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
@@ -436,6 +452,8 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -448,6 +466,7 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton1_nao1;
     private javax.swing.JRadioButton jRadioButton2_sim;
     private javax.swing.JRadioButton jRadioButton2_sim1;
+    private javax.swing.JTextField jTextField1_DescricaoIncidente;
     private javax.swing.JTextField jTextField1_Municipios;
     private javax.swing.JTextField jTextField1_bairro;
     private javax.swing.JTextField jTextField1_pontoReferencia;
