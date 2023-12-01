@@ -1,12 +1,13 @@
 create table Denuncia(
 	id serial primary key not null,
-	protocolo varchar,
+	protocolo varchar ,
 	foto bytea,
 	denunciante varchar not null,
-	endereco_Incidente varchar not null,
+	id_endereco int,
 	descricao_Incidente varchar not null, 
 	categoria varchar not null,
 	data date not null,
 	Autor_Crime varchar not null,
+	status_Denuncia varchar,
     foreign key(denunciante)references usuarios(cpf)
 )

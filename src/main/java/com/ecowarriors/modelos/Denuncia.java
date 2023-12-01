@@ -22,7 +22,7 @@ public class Denuncia {
     }
     
 
-    public Denuncia(String protocolo, File foto, String denunciante, Endereco enderecoIncidente, String descricaoIncidente, Categoria categoria, String AutorCrime) {
+    public Denuncia(String protocolo, File foto, String denunciante, Endereco enderecoIncidente, String descricaoIncidente, Categoria categoria, Date data, String AutorCrime, StatusDenuncia statusDenuncia) {
         this.protocolo = protocolo;
         this.foto = foto;
         this.statusDenuncia  = StatusDenuncia.CRIADA;
@@ -95,6 +95,14 @@ public class Denuncia {
 
     public void setData(Date data) {
         this.data = data;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 

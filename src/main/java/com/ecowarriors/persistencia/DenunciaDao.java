@@ -4,6 +4,7 @@ import com.ecowarriors.Enum.StatusDenuncia;
 import com.ecowarriors.ferramentas.ConexaoBD;
 import java.util.ArrayList;
 import com.ecowarriors.modelos.Denuncia;
+import com.ecowarriors.modelos.Endereco;
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,28 +19,39 @@ import javax.mail.Service;
 public class DenunciaDao implements IDenunciaDao {
 
     private Connection conexao = null;
-    PreparedStatement st;
+    PreparedStatement st, stEndereco;
 
     public DenunciaDao() throws Exception {
         conexao = ConexaoBD.getConexao();
     }
 
     @Override
-    public void cadastroDenuncia(Denuncia denuncia) throws Exception {
+    public void cadastroDenuncia(Denuncia denuncia, Endereco endereco) throws Exception {
         try {
             FileInputStream fis = new FileInputStream(denuncia.getFoto());
 
-            st = conexao.prepareStatement("insert into Denuncia( protocolo, foto,denunciante, endereco_Incidente, descricao_Incidente, categoria, Autor_Crime,status_denuncia) values (?,?, ?, ?, ?, ?, ?, ?) RETURNING id");
+            st = conexao.prepareStatement("insert into Denuncia( protocolo, foto, denunciante, id_endereco, descricao_Incidente, categoria, data, Autor_Crime, status_denuncia) values (? ,?, ?, ?, ?, ?, ?, ?, ?) RETURNING id");
 
             st.setString(1, denuncia.getProtocolo());
             st.setBinaryStream(2, fis);
             st.setString(3, denuncia.getDenuciante());
-            st.setString(4, denuncia.getEnderecoIncidente().getCEP()+ " " + denuncia.getEnderecoIncidente().getBairro());
+            st.setInt(4, denuncia.getEnderecoIncidente().getId());
             st.setString(5, denuncia.getDescricaoIncidente());
             st.setString(6, denuncia.getCategoria().toString());
-            st.setString(7, denuncia.getAutorCrime());
-            st.setString(8, denuncia.getStatusDenuncia().toString());
-
+            st.setDate(7, denuncia.getData());
+            st.setString(8, denuncia.getAutorCrime());
+            st.setString(9, denuncia.getStatusDenuncia().toString());
+            
+            
+            stEndereco = conexao.prepareStatement("insert into Endereco(protocolo_denuncia, cep, bairro, rua, municipio, ponto_referencia) values (?, ?, ?, ?, ?, ?)");
+            stEndereco.setString(1, "");
+            stEndereco.setString(2, endereco.getCEP());
+            stEndereco.setString(3, endereco.getBairro());
+            stEndereco.setString(4, endereco.getRua());
+            stEndereco.setString(5, endereco.getMunicipio());
+            stEndereco.setString(6, endereco.getPontoReferencia());
+            stEndereco.executeUpdate();
+            
             ResultSet resultSet = st.executeQuery();
             if (resultSet.next()) {
                 int idSerial = resultSet.getInt(1);
@@ -58,6 +70,8 @@ public class DenunciaDao implements IDenunciaDao {
                 }
                 st.close();
             }
+            stEndereco = conexao.prepareStatement("UPDATE Endereco set protocolo_denuncia where denuncia.id_endereco = endereco.id");
+            stEndereco.executeUpdate();
         } catch (Exception erro) {
             System.out.println("Erro no cadastro de denuncia " + erro);
         }
