@@ -8,7 +8,7 @@ public interface IDenunciaDao {
     void consultarDenuncia(Denuncia denuncia) throws Exception;
     ArrayList<Denuncia> listagemDenuncia() throws Exception;
 
-
+    void atualizarDenuncia(String cpfDenunciante)throws Exception;
 
 
 }

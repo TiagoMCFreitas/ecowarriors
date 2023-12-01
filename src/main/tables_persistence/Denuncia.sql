@@ -7,5 +7,6 @@ create table Denuncia(
 	descricao_Incidente varchar not null, 
 	categoria varchar not null,
 	data date not null,
-	Autor_Crime varchar not null
+	Autor_Crime varchar not null,
+    foreign key(denunciante)references usuarios(cpf)
 )

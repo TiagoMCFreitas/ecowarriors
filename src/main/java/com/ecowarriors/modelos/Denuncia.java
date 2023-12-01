@@ -3,6 +3,7 @@ package com.ecowarriors.modelos;
 import java.io.File;
 import java.sql.Date;
 import com.ecowarriors.Enum.Categoria;
+import com.ecowarriors.Enum.StatusDenuncia;
 
 public class Denuncia {
 
@@ -12,6 +13,7 @@ public class Denuncia {
     private String denuciante;
     private Endereco enderecoIncidente;
     private String descricaoIncidente;
+    private StatusDenuncia statusDenuncia;
     private Categoria categoria; 
     private Date data;
     private String AutorCrime;
@@ -20,15 +22,14 @@ public class Denuncia {
     }
     
 
-    public Denuncia(String protocolo, File foto, String denunciante, Endereco enderecoIncidente, String descricaoIncidente, Categoria categoria, Date data, String AutorCrime) {
-        this.id = id;
+    public Denuncia(String protocolo, File foto, String denunciante, Endereco enderecoIncidente, String descricaoIncidente, Categoria categoria, String AutorCrime) {
         this.protocolo = protocolo;
         this.foto = foto;
+        this.statusDenuncia  = StatusDenuncia.CRIADA;
         this.denuciante = denunciante;
         this.enderecoIncidente = enderecoIncidente;
         this.descricaoIncidente = descricaoIncidente;
         this.categoria = categoria;
-        this.data = data;
         this.AutorCrime = AutorCrime;
     }
 
@@ -60,6 +61,14 @@ public class Denuncia {
         return foto;
     }
 
+    public StatusDenuncia getStatusDenuncia() {
+        return statusDenuncia;
+    }
+
+    public void setStatusDenuncia(StatusDenuncia statusDenuncia) {
+        this.statusDenuncia = statusDenuncia;
+    }
+
     public void setFoto(File foto) {
         this.foto = foto;
     }
@@ -87,6 +96,7 @@ public class Denuncia {
     public void setData(Date data) {
         this.data = data;
     }
+
 
     public String getAutorCrime() {
         return AutorCrime;
