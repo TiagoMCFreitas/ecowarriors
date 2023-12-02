@@ -22,7 +22,7 @@ public class Denuncia {
     }
     
 
-    public Denuncia(String protocolo, File foto, String denunciante, Endereco enderecoIncidente, String descricaoIncidente, Categoria categoria, Date data, String AutorCrime, StatusDenuncia statusDenuncia) {
+    public Denuncia(String protocolo, File foto, String denunciante, String descricaoIncidente, Categoria categoria, Date data, String AutorCrime, StatusDenuncia statusDenuncia) {
         this.protocolo = protocolo;
         this.foto = foto;
         this.statusDenuncia  = StatusDenuncia.CRIADA;

@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class tCadastroDenunciante extends javax.swing.JFrame {
 
@@ -496,27 +497,43 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 java.sql.Date data = null;
                 data = new java.sql.Date(formatter.parse(jFormattedTextField1_data.getText()).getTime());
-                Denuncia denuncia = new Denuncia("", fotos, "ANÔNIMO", endereco, jTextArea1_descricao.getText(), Categoria.FLORA, data, jTextField1_possivel_criminoso.getText(), StatusDenuncia.CRIADA);
-
+                Denuncia denuncia = new Denuncia("", fotos, "ANÔNIMO", jTextArea1_descricao.getText(), Categoria.FLORA, data, jTextField1_possivel_criminoso.getText(), StatusDenuncia.CRIADA);
                 denunciaDAO.cadastroDenuncia(denuncia, endereco);
-                denunciaDAO.atualizarProtocolo();
+                limparCampos();
+                JOptionPane.showMessageDialog(rootPane, "Denuncia cadastrada, obrigado!");
+
             } else if (jRadioButton2_naoo.isSelected()) {
-                
+
                 IDenunciaDao denunciaDAO = new DenunciaDao();
                 Endereco enderecoo = new Endereco(jTextField1_rua.getText(), jTextField1_bairro.getText(), jTextField1_Municipios.getText(), jFormattedTextField1_CEP.getText(),
                         jTextField1_pontoReferencia.getText());
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 java.sql.Date data = null;
                 data = new java.sql.Date(formatter.parse(jFormattedTextField1_data.getText()).getTime());
-                Denuncia denunciaa = new Denuncia("", fotos, "ANÔNIMO", enderecoo, jTextArea1_descricao.getText(), Categoria.FLORA, data, "Nao_identificado", StatusDenuncia.CRIADA);
+                Denuncia denunciaa = new Denuncia("", fotos, "ANÔNIMO", jTextArea1_descricao.getText(), Categoria.FLORA, data, "Nao_identificado", StatusDenuncia.CRIADA);
                 denunciaDAO.cadastroDenuncia(denunciaa, enderecoo);
-                denunciaDAO.atualizarProtocolo();
+                limparCampos();
+                JOptionPane.showMessageDialog(rootPane, "Denuncia cadastrada, obrigado!");
             }
 
         } catch (Exception ex) {
             Logger.getLogger(tCadastroDenunciante.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton3_denunciarActionPerformed
+
+    public void limparCampos() {
+        jTextArea1_descricao.setText("");
+        jFormattedTextField1_CEP.setText("");
+        jTextField1_bairro.setText("");
+        jTextField1_Municipios.setText("");
+        jTextField1_possivel_criminoso.setText("");
+        jTextField1_pontoReferencia.setText("");
+
+        jRadioButton1_simm.setSelected(false);
+        jRadioButton2_naoo.setSelected(false);
+        jLabel21.setVisible(false);
+        jTextField1_possivel_criminoso.setVisible(false);
+    }
 
     private void jRadioButton1_simmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1_simmActionPerformed
         if (jRadioButton1_simm.isSelected()) {

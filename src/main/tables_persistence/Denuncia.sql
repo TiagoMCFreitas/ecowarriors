@@ -3,11 +3,9 @@ create table Denuncia(
 	protocolo varchar ,
 	foto bytea,
 	denunciante varchar not null,
-	id_endereco int,
 	descricao_Incidente varchar not null, 
 	categoria varchar not null,
-	data date not null,
+	data date,
 	Autor_Crime varchar not null,
-	status_Denuncia varchar,
-    foreign key(denunciante)references usuarios(cpf)
+	status_Denuncia varchar
 )
