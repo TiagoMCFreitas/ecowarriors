@@ -493,25 +493,24 @@ public class tCadastroDenunciante extends javax.swing.JFrame {
                 IDenunciaDao denunciaDAO = new DenunciaDao();
                 Endereco endereco = new Endereco(jTextField1_rua.getText(), jTextField1_bairro.getText(), jTextField1_Municipios.getText(), jFormattedTextField1_CEP.getText(),
                         jTextField1_pontoReferencia.getText());
-                
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 java.sql.Date data = null;
                 data = new java.sql.Date(formatter.parse(jFormattedTextField1_data.getText()).getTime());
                 Denuncia denuncia = new Denuncia("", fotos, "ANÔNIMO", endereco, jTextArea1_descricao.getText(), Categoria.FLORA, data, jTextField1_possivel_criminoso.getText(), StatusDenuncia.CRIADA);
 
                 denunciaDAO.cadastroDenuncia(denuncia, endereco);
+                denunciaDAO.atualizarProtocolo();
             } else if (jRadioButton2_naoo.isSelected()) {
                 
                 IDenunciaDao denunciaDAO = new DenunciaDao();
                 Endereco enderecoo = new Endereco(jTextField1_rua.getText(), jTextField1_bairro.getText(), jTextField1_Municipios.getText(), jFormattedTextField1_CEP.getText(),
                         jTextField1_pontoReferencia.getText());
-
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 java.sql.Date data = null;
                 data = new java.sql.Date(formatter.parse(jFormattedTextField1_data.getText()).getTime());
                 Denuncia denunciaa = new Denuncia("", fotos, "ANÔNIMO", enderecoo, jTextArea1_descricao.getText(), Categoria.FLORA, data, "Nao_identificado", StatusDenuncia.CRIADA);
-                
                 denunciaDAO.cadastroDenuncia(denunciaa, enderecoo);
+                denunciaDAO.atualizarProtocolo();
             }
 
         } catch (Exception ex) {

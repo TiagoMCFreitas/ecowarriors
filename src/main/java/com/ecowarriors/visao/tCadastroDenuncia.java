@@ -1,18 +1,25 @@
 package com.ecowarriors.visao;
 
+import com.ecowarriors.modelos.Usuarios;
+
 public class tCadastroDenuncia extends javax.swing.JFrame {
 
     public tCadastroDenuncia() {
         initComponents();
         setLocationRelativeTo(null);
     }
-    
+
+    public void ExportarDados(Usuarios usuario) {
+        jTextField1_CPF.setText(usuario.getCpf());
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jLabel3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        jTextField1_CPF = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -34,6 +41,7 @@ public class tCadastroDenuncia extends javax.swing.JFrame {
             }
         });
         getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 770, 190, 50));
+        getContentPane().add(jTextField1_CPF, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 180, 190, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
@@ -86,5 +94,6 @@ public class tCadastroDenuncia extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JTextField jTextField1_CPF;
     // End of variables declaration//GEN-END:variables
 }
