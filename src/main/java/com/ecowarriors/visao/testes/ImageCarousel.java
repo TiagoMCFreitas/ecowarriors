@@ -1,4 +1,4 @@
-package com.ecowarriors.visao;
+package com.ecowarriors.visao.testes;
 
 import javax.swing.*;
 import java.awt.*;

@@ -11,12 +11,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.Base64;
-
 import com.ecowarriors.services.Services;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.mail.Service;
 
 public class DenunciaDao implements IDenunciaDao {
@@ -79,7 +78,21 @@ public class DenunciaDao implements IDenunciaDao {
 
     @Override
     public ArrayList<Denuncia> listagemDenuncia() throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'listagemDenuncia'");
+        ArrayList<Denuncia> denuncias = new ArrayList<>();
+
+            String sql = "SELECT id, protocolo, denunciante FROM Denuncia";
+            try ( PreparedStatement ps = conexao.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Denuncia DenunciaLista = new Denuncia();
+                    DenunciaLista.setId(rs.getInt("id"));
+                    DenunciaLista.setProtocolo(rs.getString("protocolo"));
+                    DenunciaLista.setDenuciante(rs.getString("denunciante"));
+                    denuncias.add(DenunciaLista);
+                }
+            }
+        
+
+        return denuncias;
     }
 
     @Override
@@ -126,5 +139,10 @@ public class DenunciaDao implements IDenunciaDao {
     public static void main(String[] args) {
         int anoAtual = LocalDate.now().getYear();
         System.out.println(anoAtual);
+    }
+
+    @Override
+    public List<Denuncia> obterDenuncias() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

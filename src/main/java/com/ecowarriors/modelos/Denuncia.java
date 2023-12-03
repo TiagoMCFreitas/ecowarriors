@@ -7,30 +7,30 @@ import com.ecowarriors.Enum.StatusDenuncia;
 
 public class Denuncia {
 
-    private String id;
+    private int id;
     private String protocolo;
     private File foto = new File("");
     private String denuciante;
     private Endereco enderecoIncidente;
     private String descricaoIncidente;
     private StatusDenuncia statusDenuncia;
-    private Categoria categoria; 
+    private Categoria categoria;
     private Date data;
     private String AutorCrime;
 
     public Denuncia() {
     }
-    
 
     public Denuncia(String protocolo, File foto, String denunciante, String descricaoIncidente, Categoria categoria, Date data, String AutorCrime, StatusDenuncia statusDenuncia) {
         this.protocolo = protocolo;
         this.foto = foto;
-        this.statusDenuncia  = StatusDenuncia.CRIADA;
+        this.statusDenuncia = StatusDenuncia.CRIADA;
         this.denuciante = denunciante;
         this.enderecoIncidente = enderecoIncidente;
         this.descricaoIncidente = descricaoIncidente;
         this.categoria = categoria;
         this.AutorCrime = AutorCrime;
+        this.data = data;
     }
 
     public String getProtocolo() {
@@ -72,7 +72,7 @@ public class Denuncia {
     public void setFoto(File foto) {
         this.foto = foto;
     }
-    
+
     public String getDenuciante() {
         return denuciante;
     }
@@ -97,14 +97,13 @@ public class Denuncia {
         this.data = data;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
-
 
     public String getAutorCrime() {
         return AutorCrime;
@@ -118,5 +117,5 @@ public class Denuncia {
     public String toString() {
         return "Denuncia{" + "id=" + id + ", denuciante=" + denuciante + ", endereco=" + enderecoIncidente + ", descricao=" + descricaoIncidente + ", categoria=" + categoria + ", data=" + data + ", AutorCrime=" + AutorCrime + '}';
     }
-    
+
 }

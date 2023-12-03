@@ -42,6 +42,9 @@ public class tUsuarioLogado extends javax.swing.JFrame {
             jLabel23.setVisible(false);
             jTextField1_possivel_criminoso.setVisible(false);
 
+            jTextArea1_descricao.setLineWrap(true);
+            jTextArea1_descricao.setWrapStyleWord(true);
+            
         } catch (Exception ex) {
             Logger.getLogger(tUsuarioLogado.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -121,6 +124,11 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jMenuItem1_PERFIL.setForeground(new java.awt.Color(0, 102, 0));
         jMenuItem1_PERFIL.setText("PERFIL");
         jMenuItem1_PERFIL.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jMenuItem1_PERFIL.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuItem1_PERFILMouseClicked(evt);
+            }
+        });
         jMenuItem1_PERFIL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1_PERFILActionPerformed(evt);
@@ -633,6 +641,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         try {
             File fotos = new File("./src\\main\\java\\com\\ecowarriors\\images\\logoEcoWarriorsTelas.png");
             String cpfUsuario = jFormattedTextField1_CPF.getText().replace(".", "").replace("-", "");
+            
             if (jRadioButton1_simm.isSelected()) {
                 IDenunciaDao denunciaDAO = new DenunciaDao();
                 Endereco endereco = new Endereco(jTextField1_rua.getText(), jTextField1_bairro.getText(), jTextField1_Municipios.getText(), jFormattedTextField1_CEP.getText(),
@@ -653,10 +662,11 @@ public class tUsuarioLogado extends javax.swing.JFrame {
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 java.sql.Date data = null;
                 data = new java.sql.Date(formatter.parse(jFormattedTextField1_data.getText()).getTime());
-                Denuncia denunciaa = new Denuncia("", fotos, cpfUsuario, jTextArea1_descricao.getText(), Categoria.FLORA, data, "Naoidentificado", StatusDenuncia.CRIADA);
+                Denuncia denunciaa = new Denuncia("", fotos, cpfUsuario, jTextArea1_descricao.getText(), Categoria.FLORA, data, "Nao_identificado", StatusDenuncia.CRIADA);
                 denunciaDAO.cadastroDenuncia(denunciaa, enderecoo);
                 JOptionPane.showMessageDialog(rootPane, "Denuncia cadastrado com sucesso!");
                 limparCamposDenuncia();
+                
             }
         } catch (Exception ex) {
             Logger.getLogger(tCadastroDenunciante.class.getName()).log(Level.SEVERE, null, ex);
@@ -670,7 +680,8 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jTextField1_Municipios.setText("");
         jTextField1_possivel_criminoso.setText("");
         jTextField1_pontoReferencia.setText("");
-
+        jFormattedTextField1_data.setText("");
+        jTextField1_rua.setText("");
         jRadioButton1_simm.setSelected(false);
         jRadioButton2_naoo.setSelected(false);
         jLabel23.setVisible(false);
@@ -693,6 +704,10 @@ public class tUsuarioLogado extends javax.swing.JFrame {
             jRadioButton1_simm.setSelected(false);
         }
     }//GEN-LAST:event_jRadioButton2_naooActionPerformed
+
+    private void jMenuItem1_PERFILMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem1_PERFILMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1_PERFILMouseClicked
 
     /**
      * @param args the command line arguments
