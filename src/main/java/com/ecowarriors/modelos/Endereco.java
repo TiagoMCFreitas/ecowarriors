@@ -1,6 +1,7 @@
 package com.ecowarriors.modelos;
 
 public class Endereco {
+    private int id;
     private String rua;
     private String bairro;
     private String municipio;
@@ -14,6 +15,14 @@ public class Endereco {
         this.municipio = municipio;
         this.CEP = CEP;
         this.pontoReferencia = pontoReferencia;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
     
     public String getRua() {

@@ -45,28 +45,24 @@ public class UsuarioDao implements IUsuarioDao {
     public boolean logarUsuarios(String usuario, String senha) {
         try {
             String sql = "";
-            if(usuario.contains("@")){
-                 sql = "select * from usuarios where email = ?";
-            }else{
+            if (usuario.contains("@")) {
+                sql = "select * from usuarios where email = ?";
+            } else {
                 sql = "select * from usuarios where cpf = ?";
             }
             PreparedStatement st = conexao.prepareStatement(sql);
-            st.setString(1,usuario);
+            st.setString(1, usuario);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 String senhaCriptografada = rs.getString("senha");
                 if (new String(Base64.getDecoder().decode(senhaCriptografada)).equals(senha)) {
                     return true;
-
                 }
             }
-                return false;
+            return false;
 
-            } catch(SQLException e){
-                throw new RuntimeException(e);
-            }
-
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
-
-
 }

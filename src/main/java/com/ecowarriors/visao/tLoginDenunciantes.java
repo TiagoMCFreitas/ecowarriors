@@ -165,6 +165,7 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
             }
             boolean isLiberado = usuarioDao.logarUsuarios(jTextField1_Usuario.getText(),senha);
             if(isLiberado){
+                
                 String dadoParaPesquisa = jTextField1_Usuario.getText();
                 tUsuarioLogado usuarioLogado = new tUsuarioLogado();
                 Usuarios usuario = new Usuarios();
@@ -172,10 +173,9 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
                 usuarioLogado.ExportarDados(usuario);
                 usuarioLogado.setVisible(true);
                 this.dispose();
+           
             }else{
-                jTextField1_Senha.setText("");
-                jTextField1_Usuario.setText("");
-                jPasswordField1.setText("");
+                JOptionPane.showMessageDialog(rootPane, "Usuario ou senha incorretos!");
             }
         }catch (Exception e){
             JOptionPane.showMessageDialog(this,"Usuario ou senha incorretos");
