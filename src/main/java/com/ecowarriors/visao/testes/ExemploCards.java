@@ -41,7 +41,7 @@ public class ExemploCards extends JFrame {
         }
     }
 
-    private class CardClickListener implements ActionListener {
+    public class CardClickListener implements ActionListener {
         private int produtoId;
 
         public CardClickListener(int produtoId) {

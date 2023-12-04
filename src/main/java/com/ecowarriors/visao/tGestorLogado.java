@@ -1,41 +1,104 @@
 package com.ecowarriors.visao;
 
 import com.ecowarriors.ferramentas.ConexaoBD;
+import com.ecowarriors.ferramentas.JTableRenderer;
+import com.ecowarriors.modelos.Denuncia;
 import com.ecowarriors.modelos.Usuarios;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
-
+import javax.swing.table.DefaultTableModel;
 
 public class tGestorLogado extends javax.swing.JFrame {
 
     private Connection conexao = null;
-    
+
     public tGestorLogado() {
         try {
             initComponents();
             conexao = ConexaoBD.getConexao();
-            
-            
+
             jTextField1_Email.setEnabled(false);
             jTextField1_nomeCompleto.setEnabled(false);
             jFormattedTextField1_Telefone.setEnabled(false);
             jFormattedTextField1_CPF.setEnabled(false);
+
+            imprimirDadosNaGrid();
+            setLocationRelativeTo(null);
         } catch (Exception ex) {
             Logger.getLogger(tGestorLogado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    public void personalizarTabela() throws Exception {
+        
+    }
+
     public void ExportarDados(Usuarios usuario) {
         jTextField1_Email.setText(usuario.getEmail());
     }
-    
+
+    private void imprimirDadosNaGrid() {
+
+        try {
+
+            DefaultTableModel model = (DefaultTableModel) jTable1_Denuncias.getModel();
+            JTableRenderer JtableRenderer = new JTableRenderer();
+            conexao = ConexaoBD.getConexao();
+            Statement statement = conexao.createStatement();
+            String query = "select protocolo as Protocolo, \n"
+                    + "	denunciante as Denunciante, \n"
+                    + "	descricao_incidente as \"Descrição do Incidente\", \n"
+                    + "	categoria as Categoria, \n"
+                    + "	data as Data, \n"
+                    + "	status_denuncia as Status \n"
+                    + "from denuncia where status_denuncia = 'CRIADA' or status_denuncia = 'EM_PROCESSAMENTO'";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            DefaultTableModel tableModel = new DefaultTableModel();
+            jTable1_Denuncias.setModel(tableModel);
+
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++) {
+                tableModel.addColumn(metaData.getColumnName(i));
+            }
+
+            while (resultSet.next()) {
+                Object[] row = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    row[i - 1] = resultSet.getObject(i);
+                }
+                tableModel.addRow(row);
+            }
+            resultSet.close();
+            statement.close();
+
+            jTable1_Denuncias.getColumnModel().getColumn(3).setWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(3).setMinWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(3).setMaxWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(0).setWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(0).setMinWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(0).setMaxWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(7).setWidth(130);
+            jTable1_Denuncias.getColumnModel().getColumn(7).setMinWidth(130);
+            jTable1_Denuncias.getColumnModel().getColumn(7).setMaxWidth(130);
+            
+
+        } catch (Exception e) {
+
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,9 +126,24 @@ public class tGestorLogado extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jFrame1_avaliarDenuncia = new javax.swing.JFrame();
+        jButton3 = new javax.swing.JButton();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1_Denuncias = new javax.swing.JTable();
+        jLabel15 = new javax.swing.JLabel();
+        jTextField1_protocoloEscondido = new javax.swing.JTextField();
+        jFrame1_avaliacaoFinalDenuncia = new javax.swing.JFrame();
+        jButton4 = new javax.swing.JButton();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
@@ -99,7 +177,6 @@ public class tGestorLogado extends javax.swing.JFrame {
         jPopupMenu1.add(jMenuItem2_SAIR);
 
         jFrame1_perfilGestor.setUndecorated(true);
-        jFrame1_perfilGestor.setPreferredSize(new java.awt.Dimension(1600, 900));
         jFrame1_perfilGestor.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DADOS PESSOAIS", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 32), new java.awt.Color(0, 102, 0))); // NOI18N
@@ -188,9 +265,93 @@ public class tGestorLogado extends javax.swing.JFrame {
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
         jFrame1_perfilGestor.getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
 
+        jFrame1_avaliarDenuncia.setUndecorated(true);
+        jFrame1_avaliarDenuncia.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton3.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(0, 102, 0));
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/voltar.png"))); // NOI18N
+        jButton3.setText("  VOLTAR");
+        jButton3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jButton3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jFrame1_avaliarDenuncia.getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 770, 190, 50));
+
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/logoEcoWarriorsTelas.png"))); // NOI18N
+        jFrame1_avaliarDenuncia.getContentPane().add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(1370, 20, 200, 200));
+
+        jLabel22.setFont(new java.awt.Font("Serif", 3, 36)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel22.setText("AVALIAR DENUNCIAS");
+        jFrame1_avaliarDenuncia.getContentPane().add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 400, 50));
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DENÚNCIAS DISPONÍVEIS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 26), new java.awt.Color(0, 102, 0))); // NOI18N
+        jScrollPane1.setForeground(new java.awt.Color(255, 255, 255));
+        jScrollPane1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+
+        jTable1_Denuncias.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jTable1_Denuncias.setFont(new java.awt.Font("Serif", 3, 22)); // NOI18N
+        jTable1_Denuncias.setForeground(new java.awt.Color(0, 102, 0));
+        jTable1_Denuncias.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {},
+                {},
+                {},
+                {}
+            },
+            new String [] {
+
+            }
+        ));
+        jTable1_Denuncias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jTable1_Denuncias.setGridColor(new java.awt.Color(153, 255, 0));
+        jTable1_Denuncias.setRowHeight(45);
+        jTable1_Denuncias.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1_DenunciasMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable1_Denuncias);
+
+        jFrame1_avaliarDenuncia.getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 270, 1040, 370));
+
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
+        jFrame1_avaliarDenuncia.getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
+        jFrame1_avaliarDenuncia.getContentPane().add(jTextField1_protocoloEscondido, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 510, 140, 100));
+
+        jFrame1_avaliacaoFinalDenuncia.setUndecorated(true);
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton4.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jButton4.setForeground(new java.awt.Color(0, 102, 0));
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/voltar.png"))); // NOI18N
+        jButton4.setText("  VOLTAR");
+        jButton4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jButton4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 770, 190, 50));
+
+        jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/logoEcoWarriorsTelas.png"))); // NOI18N
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(1370, 20, 200, 200));
+
+        jLabel25.setFont(new java.awt.Font("Serif", 3, 36)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel25.setText("AVALIAR DENUNCIAS");
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 400, 50));
+
+        jLabel24.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1600, 900));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/logoPrincipall.png"))); // NOI18N
@@ -214,6 +375,27 @@ public class tGestorLogado extends javax.swing.JFrame {
         });
         getContentPane().add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1470, 90, -1, 20));
 
+        jLabel4.setFont(new java.awt.Font("Sitka Text", 3, 32)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel4.setText("LISTA DE DENÚNCIAS");
+        jLabel4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 720, 370, 40));
+
+        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/novaDenuncia.png"))); // NOI18N
+        jLabel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
+        jLabel21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel21.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel21MouseClicked(evt);
+            }
+        });
+        getContentPane().add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 570, 135, 140));
+
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/novaDenuncia.png"))); // NOI18N
         jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
         jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -221,8 +403,11 @@ public class tGestorLogado extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel6MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel6MouseEntered(evt);
+            }
         });
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 380, 135, 140));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 360, 135, 140));
 
         jLabel3.setFont(new java.awt.Font("Sitka Text", 3, 32)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(0, 102, 0));
@@ -233,10 +418,10 @@ public class tGestorLogado extends javax.swing.JFrame {
                 jLabel3MouseClicked(evt);
             }
         });
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 530, 370, 40));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 510, 370, 40));
 
         jLabel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "OPÇÕES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Serif", 3, 24), new java.awt.Color(0, 102, 0))); // NOI18N
-        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 300, 430, 350));
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 300, 430, 530));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
@@ -269,11 +454,18 @@ public class tGestorLogado extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
-       
+        try {
+            jFrame1_avaliarDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
+            jFrame1_avaliarDenuncia.setLocationRelativeTo(null);
+            jFrame1_avaliarDenuncia.setVisible(true);
+            this.dispose();
+        } catch (Exception ex) {
+            Logger.getLogger(tGestorLogado.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        
+
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jMenuItem1_PERFILActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1_PERFILActionPerformed
@@ -285,13 +477,14 @@ public class tGestorLogado extends javax.swing.JFrame {
             this.setVisible(false);
             buscarDadosUsuarioLogado();
             BuscarDadosUsuarioEmail();
-            
+
         } catch (SQLException ex) {
-            Logger.getLogger(tUsuarioLogado.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(tUsuarioLogado.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem1_PERFILActionPerformed
 
-     public void buscarDadosUsuarioLogado() throws SQLException {
+    public void buscarDadosUsuarioLogado() throws SQLException {
         String cpf = jTextField1_Email.getText();
         String sql = "SELECT * from usuarios where cpf = ?";
         try ( PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
@@ -333,7 +526,7 @@ public class tGestorLogado extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private void jMenuItem2_SAIRMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem2_SAIRMouseClicked
 
     }//GEN-LAST:event_jMenuItem2_SAIRMouseClicked
@@ -353,6 +546,39 @@ public class tGestorLogado extends javax.swing.JFrame {
         this.setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        jFrame1_avaliarDenuncia.dispose();
+        this.setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel4MouseClicked
+
+    private void jLabel21MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel21MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel21MouseClicked
+
+    private void jLabel6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel6MouseEntered
+
+    private void jTable1_DenunciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1_DenunciasMouseClicked
+        jTextField1_protocoloEscondido.setText(jTable1_Denuncias.getValueAt(jTable1_Denuncias.getSelectedRow(), 0).toString());
+        jFrame1_avaliacaoFinalDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
+        jFrame1_avaliacaoFinalDenuncia.setLocationRelativeTo(null);
+        jFrame1_avaliacaoFinalDenuncia.setVisible(true);
+        jFrame1_avaliarDenuncia.dispose();
+    }//GEN-LAST:event_jTable1_DenunciasMouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        jFrame1_avaliarDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
+        jFrame1_avaliarDenuncia.setLocationRelativeTo(null);
+        jFrame1_avaliarDenuncia.setVisible(true);
+        jFrame1_avaliacaoFinalDenuncia.dispose();
+        jTextField1_protocoloEscondido.setText("");
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -367,16 +593,24 @@ public class tGestorLogado extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(tGestorLogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tGestorLogado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(tGestorLogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tGestorLogado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(tGestorLogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tGestorLogado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(tGestorLogado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(tGestorLogado.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -390,8 +624,12 @@ public class tGestorLogado extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JFormattedTextField jFormattedTextField1_CPF;
     private javax.swing.JFormattedTextField jFormattedTextField1_Telefone;
+    private javax.swing.JFrame jFrame1_avaliacaoFinalDenuncia;
+    private javax.swing.JFrame jFrame1_avaliarDenuncia;
     private javax.swing.JFrame jFrame1_perfilGestor;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -399,12 +637,20 @@ public class tGestorLogado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -412,7 +658,10 @@ public class tGestorLogado extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1_PERFIL;
     private javax.swing.JMenuItem jMenuItem2_SAIR;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1_Denuncias;
     private javax.swing.JTextField jTextField1_Email;
     private javax.swing.JTextField jTextField1_nomeCompleto;
+    private javax.swing.JTextField jTextField1_protocoloEscondido;
     // End of variables declaration//GEN-END:variables
 }

@@ -43,6 +43,8 @@ public class tLoginGestor extends javax.swing.JFrame {
         jLabel16.setVisible(false);
         jLabel17.setVisible(false);
         jButton3_cadastrar.setVisible(false);
+        
+        setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")

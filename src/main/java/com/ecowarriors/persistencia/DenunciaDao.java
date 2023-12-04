@@ -77,8 +77,8 @@ public class DenunciaDao implements IDenunciaDao {
     }
 
     @Override
-    public ArrayList<Denuncia> listagemDenuncia() throws Exception {
-        ArrayList<Denuncia> denuncias = new ArrayList<>();
+    public List<Denuncia> listagemDenuncia() throws Exception {
+        List<Denuncia> denuncias = new ArrayList<>();
 
             String sql = "SELECT id, protocolo, denunciante FROM Denuncia";
             try ( PreparedStatement ps = conexao.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
@@ -86,7 +86,7 @@ public class DenunciaDao implements IDenunciaDao {
                     Denuncia DenunciaLista = new Denuncia();
                     DenunciaLista.setId(rs.getInt("id"));
                     DenunciaLista.setProtocolo(rs.getString("protocolo"));
-                    DenunciaLista.setDenuciante(rs.getString("denunciante"));
+                    DenunciaLista.setDenuciante(rs.getString("denunciante"));                  
                     denuncias.add(DenunciaLista);
                 }
             }
