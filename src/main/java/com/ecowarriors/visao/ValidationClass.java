@@ -1,6 +1,7 @@
 package com.ecowarriors.visao;
 
 import com.ecowarriors.Enum.Categoria;
+import com.ecowarriors.Enum.StatusDenuncia;
 import com.ecowarriors.Enum.Usuario;
 import com.ecowarriors.modelos.Denuncia;
 import com.ecowarriors.modelos.Endereco;
@@ -19,7 +20,7 @@ public class ValidationClass {
     public static void main(String[] args) throws Exception {
 
         IDenunciaDao denuncia = new DenunciaDao();
-        denuncia.atualizarDenuncia("70559404190");
+        denuncia.atualizarDenuncia(StatusDenuncia.RESPONDIDA.toString(), "1/2023");
     }
 
 }

@@ -75,40 +75,38 @@ public class DenunciaDao implements IDenunciaDao {
     }
 
     @Override
-    public void atualizarDenuncia(String cpfDenunciante) throws Exception {
+    public void atualizarDenuncia(String statusDenuncia, String protocolo) throws Exception {
     try{
-        String sql = "update denuncia set status_denuncia = ? where denunciante = ?";
+        String sql = "update denuncia set status_denuncia = ? where protocolo = ?";
             PreparedStatement stUpdate = conexao.prepareStatement(sql);
-            stUpdate.setString(1, StatusDenuncia.EM_PROCESSAMENTO.toString());
-            stUpdate.setString(2, cpfDenunciante);
+            stUpdate.setString(1, statusDenuncia);
+            stUpdate.setString(2, protocolo);
             stUpdate.executeUpdate();
 
 
 
-        String sqlParaEmail = "select usuarios.nome , " +
-                "usuarios.email, " +
-                "denuncia.protocolo, " +
-                "denuncia.status_denuncia " +
-                "from denuncia " +
-                "inner join usuarios on usuarios.cpf = denunciante " +
-                "where usuarios.cpf = ? " +
-                "order by data_criacao desc";
+            String sqlParaEmail = "select usuarios.nome , " +
+                    "usuarios.email, " +
+                    "denuncia.protocolo, " +
+                    "denuncia.status_denuncia " +
+                    "from denuncia " +
+                    "inner join usuarios on usuarios.cpf = denunciante " +
+                    "where denuncia.protocolo = ? " +
+                    "order by data_criacao desc";
         PreparedStatement stSearch = conexao.prepareStatement(sqlParaEmail);
-        stSearch.setString(1, cpfDenunciante);
+        stSearch.setString(1, protocolo);
         ResultSet rs = stSearch.executeQuery();
         String emailUsuario = "";
-        String protocolo = "";
         String status = "";
         String nome = "" ;
         while (rs.next()) {
             emailUsuario = rs.getString("email");
-            protocolo = rs.getString("protocolo");
             status = rs.getString("status_denuncia");
             nome = rs.getString("nome");
         }
         Services service = new Services();
-        String assunto = "Email referente ao protocolo: " + protocolo + "ECOWARRIORS";
-        String mensagem = "Olá, " + nome + " essa mensagem é referente a denúncia que você enviou para nós,o status dela é: " + status;
+        String assunto = "Email referente ao protocolo: " + protocolo + " ECOWARRIORS";
+        String mensagem = "Olá, " + nome + " essa mensagem é referente a denúncia que você enviou para nós,o status dela é: " + formatarDenuncia(status);
         service.sendMail(emailUsuario,assunto,mensagem);
 
         } catch (Exception erro) {
@@ -117,6 +115,19 @@ public class DenunciaDao implements IDenunciaDao {
 
     }
 
+    @Override
+    public String formatarDenuncia(String status) throws Exception {
+        if(status.equals(StatusDenuncia.CRIADA.toString())){
+            return "Criada";
+        }
+        else if (status.equals(StatusDenuncia.RESPONDIDA.toString())){
+            return "Respondida";
+        }
+        else if (status.equals(StatusDenuncia.EM_PROCESSAMENTO.toString())){
+            return "Em processamento";
+        }
+    return null;
+    }
 
 
     public static void main(String[] args) {

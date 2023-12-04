@@ -5,4 +5,5 @@ public enum StatusDenuncia {
     EM_PROCESSAMENTO,
     RESPONDIDA,
 
+
 }
