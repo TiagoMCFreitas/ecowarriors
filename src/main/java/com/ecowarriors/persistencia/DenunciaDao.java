@@ -29,7 +29,7 @@ public class DenunciaDao implements IDenunciaDao {
         try {
             FileInputStream fis = new FileInputStream(denuncia.getFoto());
 
-            st = conexao.prepareStatement("insert into Denuncia( protocolo, foto, denunciante, descricao_Incidente, categoria, data, Autor_Crime, status_denuncia) values (? ,?, ?, ?, ?, ?, ?, ?) RETURNING id, protocolo");
+            st = conexao.prepareStatement("insert into denuncia( protocolo, foto, denunciante, descricao_Incidente, categoria, data, Autor_Crime, status_denuncia) values (? ,?, ?, ?, ?, ?, ?, ?) RETURNING id, protocolo");
             st.setString(1, denuncia.getProtocolo());
             st.setBinaryStream(2, fis);
             st.setString(3, denuncia.getDenuciante());
@@ -54,6 +54,30 @@ public class DenunciaDao implements IDenunciaDao {
                     stUpdate.executeUpdate();
 
                 }
+                String sqlParaEmail = "select usuarios.nome , " +
+                        "usuarios.email, " +
+                        "denuncia.protocolo, " +
+                        "denuncia.status_denuncia " +
+                        "from denuncia " +
+                        "inner join usuarios on usuarios.cpf = denunciante " +
+                        "where denuncia.protocolo = ? " +
+                        "order by data_criacao desc";
+                PreparedStatement stSearch = conexao.prepareStatement(sqlParaEmail);
+                stSearch.setString(1, protocolo);
+                ResultSet rs = stSearch.executeQuery();
+                String emailUsuario = "";
+                String status = "";
+                String nome = "" ;
+                while (rs.next()) {
+                    emailUsuario = rs.getString("email");
+                    status = rs.getString("status_denuncia");
+                    nome = rs.getString("nome");
+                }
+                EmailService service = new EmailService();
+                String assunto = "Email referente ao protocolo: " + protocolo + " ECOWARRIORS";
+                String mensagem = "Olá, " + nome + " essa mensagem é referente a denúncia que você enviou para nós,o status dela é: " + formatarDenuncia(status);
+                service.sendMail(denuncia.getDenuciante(),assunto,mensagem);
+
                 stEndereco = conexao.prepareStatement("insert into Endereco(protocolo_denuncia, cep, bairro, rua, municipio, ponto_referencia) values (?, ?, ?, ?, ?, ?) RETURNING id");
                 stEndereco.setString(1, protocolo);
                 stEndereco.setString(2, endereco.getCEP());
@@ -64,7 +88,7 @@ public class DenunciaDao implements IDenunciaDao {
                 stEndereco.executeUpdate();
             }
         } catch (Exception erro) {
-
+            System.out.println(erro);
         }
     }
 

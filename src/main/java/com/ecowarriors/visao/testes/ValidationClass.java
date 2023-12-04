@@ -19,6 +19,8 @@ public class ValidationClass {
 
     public static void main(String[] args) throws Exception {
 
+
+
         IDenunciaDao denuncia = new DenunciaDao();
         denuncia.atualizarDenuncia(StatusDenuncia.RESPONDIDA.toString(), "1/2023");
     }
