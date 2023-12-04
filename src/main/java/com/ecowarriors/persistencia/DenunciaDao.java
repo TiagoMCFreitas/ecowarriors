@@ -10,13 +10,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
-import java.util.Base64;
-import com.ecowarriors.services.Services;
-import java.sql.SQLException;
+
+import com.ecowarriors.services.EmailService;
+
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.mail.Service;
 
 public class DenunciaDao implements IDenunciaDao {
 
@@ -125,7 +122,7 @@ public class DenunciaDao implements IDenunciaDao {
             status = rs.getString("status_denuncia");
             nome = rs.getString("nome");
         }
-        Services service = new Services();
+        EmailService service = new EmailService();
         String assunto = "Email referente ao protocolo: " + protocolo + " ECOWARRIORS";
         String mensagem = "Olá, " + nome + " essa mensagem é referente a denúncia que você enviou para nós,o status dela é: " + formatarDenuncia(status);
         service.sendMail(emailUsuario,assunto,mensagem);
@@ -156,8 +153,5 @@ public class DenunciaDao implements IDenunciaDao {
         System.out.println(anoAtual);
     }
 
-    @Override
-    public List<Denuncia> obterDenuncias() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+
 }

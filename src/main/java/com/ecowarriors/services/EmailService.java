@@ -14,7 +14,6 @@ import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
 import org.apache.commons.codec.binary.Base64;
 
-import javax.mail.Service;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -22,19 +21,18 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
 import static com.google.api.services.gmail.GmailScopes.GMAIL_SEND;
 import static javax.mail.Message.RecipientType.TO;
 
-public class Services {
+public class EmailService {
 
     private static final String TEST_EMAIL = "tiagofreitas85862@gmail.com";
     private final Gmail service;
 
-    public Services() throws Exception {
+    public EmailService() throws Exception {
         NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
         GsonFactory jsonFactory = GsonFactory.getDefaultInstance();
         service = new Gmail.Builder(httpTransport, jsonFactory, getCredentials(httpTransport, jsonFactory))
@@ -44,7 +42,7 @@ public class Services {
 
     private static Credential getCredentials(final NetHttpTransport httpTransport, GsonFactory jsonFactory)
             throws IOException {
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory, new InputStreamReader(Services.class.getResourceAsStream("./client_secret_1056301527970-2qqglc5k0dkcbq658d89isir7airpa4s.apps.googleusercontent.com.json")));
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(jsonFactory, new InputStreamReader(EmailService.class.getResourceAsStream("./client_secret_1056301527970-2qqglc5k0dkcbq658d89isir7airpa4s.apps.googleusercontent.com.json")));
         GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
                 httpTransport, jsonFactory, clientSecrets, Set.of(GMAIL_SEND))
                 .setDataStoreFactory(new FileDataStoreFactory(Paths.get("tokens").toFile()))
@@ -86,7 +84,7 @@ public class Services {
     }
 
     public static void main(String[] args) throws Exception {
-        new Services().sendMail("tiagomecaf3@gmail.com","A new message", """
+        new EmailService().sendMail("tiagomecaf3@gmail.com","A new message", """
                 Dear reader,
                                 
                 Hello world.
