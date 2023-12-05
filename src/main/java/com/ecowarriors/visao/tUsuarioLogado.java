@@ -38,15 +38,24 @@ import java.sql.Statement;
 import java.util.Iterator;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.table.DefaultTableModel;
 
 public class tUsuarioLogado extends javax.swing.JFrame {
 
     private Connection conexao = null;
+    String categoriaDenuncia;
 
     public tUsuarioLogado() {
         try {
+            carregarComboBox();
+            categoriaDenuncia = Categoria.ADMINISTRACAO_AMBIENTAL + "";
+            ApiIBGEService service = new ApiIBGEService();
+            List<String> lista = service.listaDeMunicipios();
+            for (int i = 0; i < lista.size(); i++) {
+                jComboBoxMunicipios.addItem(lista.get(i));
+            }
             conexao = ConexaoBD.getConexao();
             initComponents();
             setLocationRelativeTo(null);
@@ -59,55 +68,62 @@ public class tUsuarioLogado extends javax.swing.JFrame {
             jTextField1_possivel_criminoso.setVisible(false);
             IDenunciaDao objetoDao = new DenunciaDao();
             String cpfUsuario = jFormattedTextField1_CPF.getText().replace(".", "").replace("-", "");
-            imprimirDadosNaGrid(objetoDao.tabelaDenunciasUsuarios(cpfUsuario));
+            imprimirDadosNaGrid();
             jTextArea1_descricao.setLineWrap(true);
             jTextArea1_descricao.setWrapStyleWord(true);
-           ApiIBGEService service = new ApiIBGEService();
-           List<String> lista = service.listaDeMunicipios();
-           for (int i = 0 ; i < lista.size();i++){
-               jComboBoxMunicipios.addItem(lista.get(i));
-           }
-           
-           
-            
-            
 
         } catch (Exception ex) {
             Logger.getLogger(tUsuarioLogado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-     public void imprimirDadosNaGrid(List<Denuncia> listaDeDenuncias) {
-          DefaultTableModel model = (DefaultTableModel) jTable1_Denuncias.getModel();
 
-        model.setNumRows(0);
-        Iterator<Denuncia> lista = listaDeDenuncias.iterator();
+    private void imprimirDadosNaGrid() {
 
         try {
-            while (lista.hasNext()) {
-                String[] saida = new String[4];
-                Denuncia aux = lista.next();
-                
-                saida[0] = "" + aux.getProtocolo();
-                saida[1] = aux.getDenuciante();
-                saida[2] = aux.getStatusDenuncia().toString();
-                if(aux.getStatusDenuncia().toString().equals("EM_PROCESSAMENTO")){
-                    saida[3] = "./src/main/java/com/ecowarriors/visao/icons/barraLaranja.png";
-                }
-                if(aux.getStatusDenuncia().toString().equals("CRIADA")){
-                    saida[3] = "./src/main/java/com/ecowarriors/visao/icons/barraVermelha.png";
-                }
-                if(aux.getStatusDenuncia().toString().equals("RESPONDIDA")){
-                    saida[3] = "./src/main/java/com/ecowarriors/visao/icons/barraVerde.png";
-                }
-                //Incluir nova linha na Tabela
-                model.addRow(saida);
+
+            DefaultTableModel model = (DefaultTableModel) jTable1_Denuncias.getModel();
+            JTableRenderer JtableRenderer = new JTableRenderer();
+            conexao = ConexaoBD.getConexao();
+            Statement statement = conexao.createStatement();
+            String cpf = jFormattedTextField1_CPF.getText().replace(".", "").replace("-", "");
+            String query = "select denuncia.protocolo, \n"
+                    + "denuncia.denunciante, \n"
+                    + "denuncia.status_denuncia as Status \n"
+                    + "from denuncia where denuncia.denunciante = " + "'" + cpf + "'";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            DefaultTableModel tableModel = new DefaultTableModel();
+            jTable1_Denuncias.setModel(tableModel);
+
+            ResultSetMetaData metaData = resultSet.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            for (int i = 1; i <= columnCount; i++) {
+                tableModel.addColumn(metaData.getColumnName(i));
             }
 
-        } catch (Exception ex) {
+            while (resultSet.next()) {
+                Object[] row = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    row[i - 1] = resultSet.getObject(i);
+                }
+                tableModel.addRow(row);
+            }
+            resultSet.close();
+            statement.close();
+
+            jTable1_Denuncias.getColumnModel().getColumn(3).setWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(3).setMinWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(3).setMaxWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(0).setWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(0).setMinWidth(140);
+            jTable1_Denuncias.getColumnModel().getColumn(0).setMaxWidth(140);
+
+        } catch (Exception e) {
 
         }
-    
-     }
+    }
+
     public void ExportarDados(Usuarios usuario) {
         jTextField1_Email.setText(usuario.getEmail());
     }
@@ -179,6 +195,8 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jLabel33 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
+        jComboBox_categoriaDenuncia = new javax.swing.JComboBox<>();
+        jLabel54 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
@@ -229,7 +247,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
 
         jLabel39.setFont(new java.awt.Font("Serif", 3, 36)); // NOI18N
         jLabel39.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel39.setText("CADASTRAR DENÚNCIA");
+        jLabel39.setText("CONSULTAR DENUNCIA");
         jFrame1_DenunciaRespondida.getContentPane().add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 430, 50));
 
         jFormattedTextField1_CEPDenunciaRespondida.setEditable(false);
@@ -503,7 +521,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jLabel20.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel20.setForeground(new java.awt.Color(0, 102, 0));
         jLabel20.setText("DESCRIÇÃO");
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 200, 170, 30));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 150, 170, 30));
 
         jLabel21.setFont(new java.awt.Font("Serif", 3, 36)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(0, 102, 0));
@@ -518,27 +536,27 @@ public class tUsuarioLogado extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         jFormattedTextField1_CEP.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
-        jFrame1_CadastrarDenuncia.getContentPane().add(jFormattedTextField1_CEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 250, 190, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jFormattedTextField1_CEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 190, 40));
 
         jLabel22.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(0, 102, 0));
         jLabel22.setText("RUA");
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 350, 60, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 300, 60, 40));
 
         jTextField1_possivel_criminoso.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_possivel_criminoso.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_possivel_criminoso.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_CadastrarDenuncia.getContentPane().add(jTextField1_possivel_criminoso, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 600, 580, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jTextField1_possivel_criminoso, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 600, 580, 40));
 
         jTextField1_pontoReferencia.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_pontoReferencia.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_pontoReferencia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_CadastrarDenuncia.getContentPane().add(jTextField1_pontoReferencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 480, 580, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jTextField1_pontoReferencia, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 430, 580, 40));
 
         jTextField1_rua.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_rua.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_rua.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_CadastrarDenuncia.getContentPane().add(jTextField1_rua, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, 340, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jTextField1_rua, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 300, 340, 40));
 
         jButton3.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jButton3.setForeground(new java.awt.Color(0, 102, 0));
@@ -556,32 +574,47 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jLabel33.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel33.setForeground(new java.awt.Color(0, 102, 0));
         jLabel33.setText("SELECIONAR PROVAS");
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 360, 320, -1));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 310, 320, -1));
 
         jLabel23.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel23.setForeground(new java.awt.Color(0, 102, 0));
         jLabel23.setText("POSSÍVEL CRIMINOSO");
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 560, 310, -1));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(880, 560, 310, -1));
 
         jLabel24.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(0, 102, 0));
         jLabel24.setText("RECONHECE O AUTOR DO CRIME?");
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 480, 480, -1));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 480, 480, -1));
+
+        jComboBox_categoriaDenuncia.setFont(new java.awt.Font("Segoe UI", 2, 26)); // NOI18N
+        jComboBox_categoriaDenuncia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jComboBox_categoriaDenuncia.setDoubleBuffered(true);
+        jComboBox_categoriaDenuncia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_categoriaDenunciaActionPerformed(evt);
+            }
+        });
+        jFrame1_CadastrarDenuncia.getContentPane().add(jComboBox_categoriaDenuncia, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 420, 330, 40));
+
+        jLabel54.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel54.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel54.setText("TIPO");
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel54, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 420, 80, 40));
 
         jLabel25.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel25.setForeground(new java.awt.Color(0, 102, 0));
         jLabel25.setText("DATA DO OCORRIDO");
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 420, 290, -1));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 370, 290, -1));
 
         jLabel26.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(0, 102, 0));
         jLabel26.setText("PONTO DE REFERÊNCIA");
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 450, 340, 30));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 400, 340, 30));
 
         jLabel27.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(0, 102, 0));
         jLabel27.setText("BAIRRO");
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 300, 120, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 250, 120, 40));
 
         jButton4.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jButton4.setForeground(new java.awt.Color(0, 102, 0));
@@ -592,12 +625,12 @@ public class tUsuarioLogado extends javax.swing.JFrame {
                 jButton4ActionPerformed(evt);
             }
         });
-        jFrame1_CadastrarDenuncia.getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 360, 110, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(1080, 310, 110, 40));
 
         jLabel28.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(0, 102, 0));
         jLabel28.setText("CEP");
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 250, 70, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 200, 70, 40));
 
         jButton1.setFont(new java.awt.Font("Serif", 3, 22)); // NOI18N
         jButton1.setForeground(new java.awt.Color(0, 102, 0));
@@ -610,22 +643,27 @@ public class tUsuarioLogado extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jFrame1_CadastrarDenuncia.getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 250, 140, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 140, 40));
 
         jLabel29.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(0, 102, 0));
         jLabel29.setText("MUNICIPIO");
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 400, 160, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, 160, 40));
 
         jComboBoxMunicipios.setFont(new java.awt.Font("Segoe UI", 2, 26)); // NOI18N
         jComboBoxMunicipios.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         jComboBoxMunicipios.setDoubleBuffered(true);
-        jFrame1_CadastrarDenuncia.getContentPane().add(jComboBoxMunicipios, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 400, 330, 40));
+        jComboBoxMunicipios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxMunicipiosActionPerformed(evt);
+            }
+        });
+        jFrame1_CadastrarDenuncia.getContentPane().add(jComboBoxMunicipios, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, 330, 40));
 
         jTextField1_bairro.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_bairro.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_bairro.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_CadastrarDenuncia.getContentPane().add(jTextField1_bairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 300, 340, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jTextField1_bairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 250, 340, 40));
 
         jButton3_denunciar.setFont(new java.awt.Font("Serif", 3, 24)); // NOI18N
         jButton3_denunciar.setForeground(new java.awt.Color(0, 102, 0));
@@ -647,7 +685,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jTextArea1_descricao.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         jScrollPane1.setViewportView(jTextArea1_descricao);
 
-        jFrame1_CadastrarDenuncia.getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 240, 580, 100));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 190, 580, 100));
 
         jFormattedTextField1_data.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         jFormattedTextField1_data.setForeground(new java.awt.Color(0, 102, 0));
@@ -657,7 +695,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         jFormattedTextField1_data.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
-        jFrame1_CadastrarDenuncia.getContentPane().add(jFormattedTextField1_data, new org.netbeans.lib.awtextra.AbsoluteConstraints(1070, 420, 130, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jFormattedTextField1_data, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 370, 130, 40));
 
         jRadioButton1_simm.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jRadioButton1_simm.setForeground(new java.awt.Color(0, 102, 0));
@@ -667,7 +705,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
                 jRadioButton1_simmActionPerformed(evt);
             }
         });
-        jFrame1_CadastrarDenuncia.getContentPane().add(jRadioButton1_simm, new org.netbeans.lib.awtextra.AbsoluteConstraints(940, 520, -1, -1));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jRadioButton1_simm, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 520, -1, -1));
 
         jRadioButton2_naoo.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jRadioButton2_naoo.setForeground(new java.awt.Color(0, 102, 0));
@@ -677,13 +715,13 @@ public class tUsuarioLogado extends javax.swing.JFrame {
                 jRadioButton2_naooActionPerformed(evt);
             }
         });
-        jFrame1_CadastrarDenuncia.getContentPane().add(jRadioButton2_naoo, new org.netbeans.lib.awtextra.AbsoluteConstraints(1060, 520, -1, -1));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jRadioButton2_naoo, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 520, -1, -1));
 
         jLabel31.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "ENDEREÇO DO INCIDENTE", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 24), new java.awt.Color(0, 102, 0))); // NOI18N
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, 620, 500));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 620, 550));
 
         jLabel30.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DADOS DO INCIDENTE", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 24), new java.awt.Color(0, 102, 0))); // NOI18N
-        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 160, 620, 500));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 110, 620, 550));
 
         jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
         jFrame1_CadastrarDenuncia.getContentPane().add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
@@ -722,8 +760,8 @@ public class tUsuarioLogado extends javax.swing.JFrame {
 
         jLabel35.setFont(new java.awt.Font("Serif", 3, 36)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel35.setText("AVALIAR DENUNCIAS");
-        jFrame1_avaliarDenuncia.getContentPane().add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 400, 50));
+        jLabel35.setText("CONSULTAR DENUNCIA");
+        jFrame1_avaliarDenuncia.getContentPane().add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 40, 440, 50));
 
         jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DENÚNCIAS DISPONÍVEIS", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 26), new java.awt.Color(0, 102, 0))); // NOI18N
         jScrollPane2.setForeground(new java.awt.Color(255, 255, 255));
@@ -751,7 +789,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTable1_Denuncias.setCursor(new java.awt.Cursor(java.awt.Cursor.MOVE_CURSOR));
+        jTable1_Denuncias.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jTable1_Denuncias.setGridColor(new java.awt.Color(153, 255, 0));
         jTable1_Denuncias.setRowHeight(45);
         jTable1_Denuncias.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -847,20 +885,35 @@ public class tUsuarioLogado extends javax.swing.JFrame {
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         try {
+            buscarDadosUsuarioLogado();
+            BuscarDadosUsuarioEmail();
             jFrame1_avaliarDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
             jFrame1_avaliarDenuncia.setLocationRelativeTo(null);
             jFrame1_avaliarDenuncia.setVisible(true);
+
             String cpfUsuario = jFormattedTextField1_CPF.getText().replace(".", "").replace("-", "");
             jButtonVerDenuncia.setEnabled(false);
             IDenunciaDao objetoDao = new DenunciaDao();
-            imprimirDadosNaGrid(objetoDao.tabelaDenunciasUsuarios(cpfUsuario));        
+            imprimirDadosNaGrid();
         } catch (Exception ex) {
             Logger.getLogger(tUsuarioLogado.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
-
+        try {
+            buscarDadosUsuarioLogado();
+            BuscarDadosUsuarioEmail();
+            jFrame1_avaliarDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
+            jFrame1_avaliarDenuncia.setLocationRelativeTo(null);
+            jFrame1_avaliarDenuncia.setVisible(true);
+            String cpfUsuario = jFormattedTextField1_CPF.getText().replace(".", "").replace("-", "");
+            jButtonVerDenuncia.setEnabled(false);
+            IDenunciaDao objetoDao = new DenunciaDao();
+            imprimirDadosNaGrid();
+        } catch (Exception ex) {
+            Logger.getLogger(tUsuarioLogado.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jLabel5MouseClicked
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
@@ -877,13 +930,12 @@ public class tUsuarioLogado extends javax.swing.JFrame {
 
     private void jMenuItem1_PERFILActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1_PERFILActionPerformed
         try {
-
+            buscarDadosUsuarioLogado();
+            BuscarDadosUsuarioEmail();
             jFrame1_perfilUsuario.setVisible(true);
             jFrame1_perfilUsuario.setBounds(WIDTH, WIDTH, 1600, 900);
             jFrame1_perfilUsuario.setLocationRelativeTo(null);
             this.setVisible(false);
-            buscarDadosUsuarioLogado();
-            BuscarDadosUsuarioEmail();
         } catch (SQLException ex) {
             Logger.getLogger(tUsuarioLogado.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -904,9 +956,9 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     public void buscarDadosUsuarioLogado() throws SQLException {
         String cpf = jTextField1_Email.getText();
         String sql = "SELECT * from usuarios where cpf = ?";
-        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+        try ( PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
             preparedStatement.setString(1, cpf);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     String nome = resultSet.getString("nome");
                     jTextField1_nomeCompleto.setText(nome);
@@ -925,9 +977,9 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     public void BuscarDadosUsuarioEmail() throws SQLException {
         String email = jTextField1_Email.getText();
         String sql = "SELECT * from usuarios where EMAIL = ?";
-        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+        try ( PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
             preparedStatement.setString(1, email);
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     String nome = resultSet.getString("nome");
                     jTextField1_nomeCompleto.setText(nome);
@@ -964,29 +1016,56 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
-        jFrame1_CadastrarDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
-        jFrame1_CadastrarDenuncia.setLocationRelativeTo(null);
-        jFrame1_CadastrarDenuncia.setVisible(true);
-        this.setVisible(false);
+        try {
+            buscarDadosUsuarioLogado();
+            BuscarDadosUsuarioEmail();
+            IDenunciaDao objetoDao = new DenunciaDao();
+            List<Denuncia> lista = objetoDao.listagemDenunciaOrdernada();
+            String protocoloNovo = "";
+            System.out.println(protocoloNovo);
+            if (lista.isEmpty()) {
+                protocoloNovo = "1-" + LocalDate.now().getYear();
+            } else {
+                String protocolo = lista.get(0).getProtocolo();
+                String splitProtocolo = protocolo.split("/")[0];
+                int anoAtual = LocalDate.now().getYear();
+                int idNovo = Integer.parseInt(splitProtocolo);
+                idNovo++;
+                protocoloNovo = idNovo + "-" + anoAtual;
+            }
+            String caminhoDaPasta = "./src/main/java/com/ecowarriors/pasta_protocolo/" + protocoloNovo;
+            System.out.println(caminhoDaPasta);
+            File novaPasta = new File(caminhoDaPasta);
+            if (!novaPasta.exists()) {
+                boolean pastaCriada = novaPasta.mkdirs();
+            }
+            jFrame1_CadastrarDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
+            jFrame1_CadastrarDenuncia.setLocationRelativeTo(null);
+            jFrame1_CadastrarDenuncia.setVisible(true);
+            this.setVisible(false);
+        } catch (Exception ex) {
+            Logger.getLogger(tUsuarioLogado.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jLabel3MouseClicked
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         try {
-           IDenunciaDao objetoDao = new DenunciaDao();
+            buscarDadosUsuarioLogado();
+            BuscarDadosUsuarioEmail();
+            IDenunciaDao objetoDao = new DenunciaDao();
             List<Denuncia> lista = objetoDao.listagemDenunciaOrdernada();
-            String protocoloNovo= "";
+            String protocoloNovo = "";
             System.out.println(protocoloNovo);
-            if(lista.isEmpty()){
-            protocoloNovo = "1-"+LocalDate.now().getYear();
-            }    
-            else{
-            String protocolo = lista.get(0).getProtocolo();
-            String splitProtocolo = protocolo.split("/")[0];
-            int anoAtual = LocalDate.now().getYear();
-            int idNovo = Integer.parseInt(splitProtocolo);
-            idNovo++;
-            protocoloNovo = idNovo + "-" + anoAtual;
-             }
+            if (lista.isEmpty()) {
+                protocoloNovo = "1-" + LocalDate.now().getYear();
+            } else {
+                String protocolo = lista.get(0).getProtocolo();
+                String splitProtocolo = protocolo.split("/")[0];
+                int anoAtual = LocalDate.now().getYear();
+                int idNovo = Integer.parseInt(splitProtocolo);
+                idNovo++;
+                protocoloNovo = idNovo + "-" + anoAtual;
+            }
             String caminhoDaPasta = "./src/main/java/com/ecowarriors/pasta_protocolo/" + protocoloNovo;
             System.out.println(caminhoDaPasta);
             File novaPasta = new File(caminhoDaPasta);
@@ -1004,21 +1083,20 @@ public class tUsuarioLogado extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         try {
-           IDenunciaDao objetoDao = new DenunciaDao();
+            IDenunciaDao objetoDao = new DenunciaDao();
             List<Denuncia> lista = objetoDao.listagemDenunciaOrdernada();
-            String protocoloNovo= "";
+            String protocoloNovo = "";
             System.out.println(protocoloNovo);
-            if(lista.isEmpty()){
-            protocoloNovo = "1-"+LocalDate.now().getYear();
-            }    
-            else{
-            String protocolo = lista.get(0).getProtocolo();
-            String splitProtocolo = protocolo.split("/")[0];
-            int anoAtual = LocalDate.now().getYear();
-            int idNovo = Integer.parseInt(splitProtocolo);
-            idNovo++;
-            protocoloNovo = idNovo + "-" + anoAtual;
-             }
+            if (lista.isEmpty()) {
+                protocoloNovo = "1-" + LocalDate.now().getYear();
+            } else {
+                String protocolo = lista.get(0).getProtocolo();
+                String splitProtocolo = protocolo.split("/")[0];
+                int anoAtual = LocalDate.now().getYear();
+                int idNovo = Integer.parseInt(splitProtocolo);
+                idNovo++;
+                protocoloNovo = idNovo + "-" + anoAtual;
+            }
             String caminhoDaPasta = "./src/main/java/com/ecowarriors/pasta_protocolo/" + protocoloNovo;
             System.out.println(caminhoDaPasta);
             File novaPasta = new File(caminhoDaPasta);
@@ -1050,14 +1128,26 @@ public class tUsuarioLogado extends javax.swing.JFrame {
             Denuncia denuncia = null;
             Endereco endereco = null;
             IDenunciaDao denunciaDAO = null;
+            if (jComboBox_categoriaDenuncia.getSelectedIndex() == 0) {
+                categoriaDenuncia = Categoria.FAUNA + "";
+            } else if (jComboBox_categoriaDenuncia.getSelectedIndex() == 1) {
+                categoriaDenuncia = Categoria.FLORA + "";
+            } else if (jComboBox_categoriaDenuncia.getSelectedIndex() == 2) {
+                categoriaDenuncia = Categoria.POLUICAO + "";
+            } else if (jComboBox_categoriaDenuncia.getSelectedIndex() == 3) {
+                categoriaDenuncia = Categoria.ODENAMENTO_URBANO_E_PATRIMONIO_CULTURAL + "";
+            } else if (jComboBox_categoriaDenuncia.getSelectedIndex() == 4) {
+                categoriaDenuncia = Categoria.ADMINISTRACAO_AMBIENTAL + "";
+            }
+
             if (jRadioButton1_simm.isSelected()) {
-                 denunciaDAO = new DenunciaDao();
-                 endereco = new Endereco(jTextField1_rua.getText(), jTextField1_bairro.getText(), jComboBoxMunicipios.getSelectedItem().toString(), jFormattedTextField1_CEP.getText(),
+                denunciaDAO = new DenunciaDao();
+                endereco = new Endereco(jTextField1_rua.getText(), jTextField1_bairro.getText(), jComboBoxMunicipios.getSelectedItem().toString(), jFormattedTextField1_CEP.getText(),
                         jTextField1_pontoReferencia.getText());
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 java.sql.Date data = null;
                 data = new java.sql.Date(formatter.parse(jFormattedTextField1_data.getText()).getTime());
-                denuncia = new Denuncia("", fotos, cpfUsuario, jTextArea1_descricao.getText(), Categoria.FLORA, data, jTextField1_possivel_criminoso.getText(), StatusDenuncia.CRIADA);
+                denuncia = new Denuncia("", fotos, cpfUsuario, jTextArea1_descricao.getText(), Categoria.valueOf(categoriaDenuncia), data, jTextField1_possivel_criminoso.getText(), StatusDenuncia.CRIADA);
 
                 denunciaDAO.cadastroDenuncia(denuncia, endereco);
                 JOptionPane.showMessageDialog(rootPane, "Denuncia cadastrado com sucesso!");
@@ -1070,8 +1160,8 @@ public class tUsuarioLogado extends javax.swing.JFrame {
                 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                 java.sql.Date data = null;
                 data = new java.sql.Date(formatter.parse(jFormattedTextField1_data.getText()).getTime());
-                denuncia = new Denuncia("", fotos, cpfUsuario, jTextArea1_descricao.getText(), Categoria.FLORA, data, "Nao_identificado", StatusDenuncia.CRIADA);
-                
+                denuncia = new Denuncia("", fotos, cpfUsuario, jTextArea1_descricao.getText(), Categoria.valueOf(categoriaDenuncia), data, "Nao_identificado", StatusDenuncia.CRIADA);
+
                 denunciaDAO.cadastroDenuncia(denuncia, endereco);
                 JOptionPane.showMessageDialog(rootPane, "Denuncia cadastrado com sucesso!");
                 limparCamposDenuncia();
@@ -1122,19 +1212,18 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         try {
             IDenunciaDao objetoDao = new DenunciaDao();
             List<Denuncia> lista = objetoDao.listagemDenunciaOrdernada();
-            String protocoloNovo= "";
+            String protocoloNovo = "";
             System.out.println(protocoloNovo);
-            if(lista.isEmpty()){
-            protocoloNovo = "1-"+LocalDate.now().getYear();
-            }    
-            else{
-            String protocolo = lista.get(0).getProtocolo();
-            String splitProtocolo = protocolo.split("/")[0];
-            int anoAtual = LocalDate.now().getYear();
-            int idNovo = Integer.parseInt(splitProtocolo);
-            idNovo++;
-            protocoloNovo = idNovo + "-" + anoAtual;
-             }
+            if (lista.isEmpty()) {
+                protocoloNovo = "1-" + LocalDate.now().getYear();
+            } else {
+                String protocolo = lista.get(0).getProtocolo();
+                String splitProtocolo = protocolo.split("/")[0];
+                int anoAtual = LocalDate.now().getYear();
+                int idNovo = Integer.parseInt(splitProtocolo);
+                idNovo++;
+                protocoloNovo = idNovo + "-" + anoAtual;
+            }
             String caminhoDaPasta = "./src/main/java/com/ecowarriors/pasta_protocolo/" + protocoloNovo;
             JFileChooser fc = new JFileChooser("");
             File buscar = new File("");
@@ -1143,35 +1232,32 @@ public class tUsuarioLogado extends javax.swing.JFrame {
             fc.showOpenDialog(this);
             File arquivo = fc.getSelectedFile();
             String nomeDoArquivo = arquivo.getPath();
-                    Random random = new Random();
+            Random random = new Random();
 
-             int numero1 = random.nextInt(101);
-        int numero2 = random.nextInt(101);
-        int numero3 = random.nextInt(101);
-        int numero4 = random.nextInt(101);
-        int numero5 = random.nextInt(101);
-        int numero6 = random.nextInt(101);
+            int numero1 = random.nextInt(101);
+            int numero2 = random.nextInt(101);
+            int numero3 = random.nextInt(101);
+            int numero4 = random.nextInt(101);
+            int numero5 = random.nextInt(101);
+            int numero6 = random.nextInt(101);
 
-        // Concatenar os números em uma String
-        String concatenacao = String.valueOf(numero1) +
-                              String.valueOf(numero2) +
-                              String.valueOf(numero3) +
-                              String.valueOf(numero4) +
-                              String.valueOf(numero5) +
-                              String.valueOf(numero6);
+            // Concatenar os números em uma String
+            String concatenacao = String.valueOf(numero1)
+                    + String.valueOf(numero2)
+                    + String.valueOf(numero3)
+                    + String.valueOf(numero4)
+                    + String.valueOf(numero5)
+                    + String.valueOf(numero6);
             BufferedImage imagem = ImageIO.read(new File(nomeDoArquivo));
-            
-            File arquivoDestino = new File(caminhoDaPasta, concatenacao+".jpg");
+
+            File arquivoDestino = new File(caminhoDaPasta, concatenacao + ".jpg");
             ImageIO.write(imagem, "jpg", arquivoDestino);
-            
-            
-            
+
 //            String nomeDoArquivo = arquivo.getPath();;
 //            ImageIcon iconLogo = new ImageIcon(nomeDoArquivo);
 //            File arquivoDestino = new File(caminhoDaPasta, arquivo.getName()); 
 //            
 //            Files.copy(arquivo.to, arquivoDestino.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            
 //            iconLogo.setImage(iconLogo.getImage().getScaledInstance(
             //                    jLabel7_logo.getWidth(), jLabel7_logo.getHeight(), 1));
             //            jLabel7_logo.setIcon(iconLogo);
@@ -1187,11 +1273,11 @@ public class tUsuarioLogado extends javax.swing.JFrame {
 
     private void jTable1_DenunciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1_DenunciasMouseClicked
         String status = jTable1_Denuncias.getValueAt(jTable1_Denuncias.getSelectedRow(), 2).toString();
-        if (status.equals("RESPONDIDA")){
-            jButtonVerDenuncia.setEnabled(true);
-        }else{
-                        jButtonVerDenuncia.setEnabled(false);
-
+        if (status.equals("RESPONDIDA")) {
+        } else if (status.equals("EM_PROCESSAMENTO")) {
+            JOptionPane.showMessageDialog(rootPane, "Analista ainda não respondeu sua denúncia!");
+        } else if (status.equals("CRIADA")) {
+            JOptionPane.showMessageDialog(rootPane, "Analista ainda não respondeu sua denúncia!");
         }
     }//GEN-LAST:event_jTable1_DenunciasMouseClicked
 
@@ -1202,7 +1288,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
             jFrame1_DenunciaRespondida.setVisible(true);
             IDenunciaDao objetoDao = new DenunciaDao();
             System.out.println(jTable1_Denuncias.getValueAt(jTable1_Denuncias.getSelectedRow(), 0).toString());
-            String []listaDeCampos = objetoDao.respostaDenuncia(jTable1_Denuncias.getValueAt(jTable1_Denuncias.getSelectedRow(), 0).toString());
+            String[] listaDeCampos = objetoDao.respostaDenuncia(jTable1_Denuncias.getValueAt(jTable1_Denuncias.getSelectedRow(), 0).toString());
             jFormattedTextField1_CEPDenunciaRespondida.setText(listaDeCampos[0]);
             jTextField1_bairroDenunciaRespondida.setText(listaDeCampos[1]);
             jTextField1_ruaDenunciaRespondida.setText(listaDeCampos[2]);
@@ -1214,13 +1300,12 @@ public class tUsuarioLogado extends javax.swing.JFrame {
             jTextArea1_descricaoDenunciaRespondida.setText(listaDeCampos[6]);
             jTextField1_RESPOSTADenunciaRespondida.setText(listaDeCampos[7]);
             jFormattedTextField1_dataDenunciaRespondida.setText(listaDeCampos[8]);
-            
+
         } catch (Exception ex) {
             Logger.getLogger(tUsuarioLogado.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
+
+
     }//GEN-LAST:event_jButtonVerDenunciaActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
@@ -1230,8 +1315,15 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton8ActionPerformed
-   
-   
+
+    private void jComboBoxMunicipiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxMunicipiosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxMunicipiosActionPerformed
+
+    private void jComboBox_categoriaDenunciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_categoriaDenunciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_categoriaDenunciaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1275,6 +1367,10 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         });
     }
 
+    private void carregarComboBox() {
+        jComboBox_categoriaDenuncia.setModel(new DefaultComboBoxModel<>(Categoria.values()));
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -1288,6 +1384,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBoxMunicipios;
     private javax.swing.JComboBox<String> jComboBoxMunicipiosDenunciaRespondida;
     private javax.swing.JComboBox<String> jComboBoxTipoDenunciaRespondida;
+    private javax.swing.JComboBox<Categoria> jComboBox_categoriaDenuncia;
     private javax.swing.JFormattedTextField jFormattedTextField1_CEP;
     private javax.swing.JFormattedTextField jFormattedTextField1_CEPDenunciaRespondida;
     private javax.swing.JFormattedTextField jFormattedTextField1_CPF;
@@ -1344,6 +1441,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
