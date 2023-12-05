@@ -13,6 +13,7 @@ public interface IDenunciaDao {
     List<Denuncia> listagemDenuncia() throws Exception;
     void atualizarDenuncia(String statusDenuncia, String protocolo)throws Exception;
     List<Denuncia> listagemDenunciaOrdernada() throws Exception;
-
     String formatarDenuncia(String status)throws Exception;
+    List<Denuncia> tabelaDenunciasUsuarios(String cpf)throws Exception;
+   String[] respostaDenuncia(String protocolo)throws Exception;
 }

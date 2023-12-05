@@ -1,7 +1,6 @@
 create table Denuncia(
 	id serial primary key not null,
-	protocolo varchar ,
-	foto bytea,
+	protocolo varchar,
 	denunciante varchar not null,
 	descricao_Incidente varchar not null, 
 	categoria varchar not null,

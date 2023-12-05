@@ -54,17 +54,12 @@ public class ApiIBGEService {
                 // Itera sobre os elementos do array
                 for (JsonNode jsonNode : jsonArray) {
                     // Verifica se o objeto tem o campo "municipio"
-                    if (jsonNode.has("municipio")) {
+                   
                         // Obtém o valor do campo "municipio"
-                        JsonNode municipioNode = jsonNode.get("municipio");
+                        String nomeMunicipio = jsonNode.get("nome").asText();
 
-                        // Verifica se o objeto "municipio" tem o campo "nome"
-                        if (municipioNode.has("nome")) {
-                            // Extrai e imprime o nome do município
-                            String nomeMunicipio = municipioNode.get("nome").asText();
-                            listaMunicipios.add(nomeMunicipio);
-                        }
-                    }
+                        listaMunicipios.add(nomeMunicipio);
+                    
                 }
             }
 
@@ -76,6 +71,7 @@ public class ApiIBGEService {
     }
 
     public static void main(String[] args) {
+    
     }
 }
 

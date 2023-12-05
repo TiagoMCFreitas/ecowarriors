@@ -42,7 +42,7 @@ public class UsuarioDao implements IUsuarioDao {
     }
 
     @Override
-    public boolean logarUsuarios(String usuario, String senha) {
+    public String logarUsuarios(String usuario, String senha) {
         try {
             String sql = "";
             if (usuario.contains("@")) {
@@ -56,10 +56,11 @@ public class UsuarioDao implements IUsuarioDao {
             while (rs.next()) {
                 String senhaCriptografada = rs.getString("senha");
                 if (new String(Base64.getDecoder().decode(senhaCriptografada)).equals(senha)) {
-                    return true;
+                    String isGestor = rs.getString("tipo_do_usuario");
+                    return isGestor;
                 }
             }
-            return false;
+            return null;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

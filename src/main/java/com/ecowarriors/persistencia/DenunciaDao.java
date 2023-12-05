@@ -1,5 +1,6 @@
-package com.ecowarriors.persistencia;
+    package com.ecowarriors.persistencia;
 
+import com.ecowarriors.Enum.Categoria;
 import com.ecowarriors.Enum.StatusDenuncia;
 import com.ecowarriors.ferramentas.ConexaoBD;
 import java.util.ArrayList;
@@ -12,13 +13,15 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 
 import com.ecowarriors.services.EmailService;
+import java.io.File;
+import java.util.Date;
 
 import java.util.List;
 
 public class DenunciaDao implements IDenunciaDao {
 
     private Connection conexao = null;
-    PreparedStatement st, stEndereco;
+    PreparedStatement st, stEndereco, stImagem;
 
     public DenunciaDao() throws Exception {
         conexao = ConexaoBD.getConexao();
@@ -29,15 +32,14 @@ public class DenunciaDao implements IDenunciaDao {
         try {
             FileInputStream fis = new FileInputStream(denuncia.getFoto());
 
-            st = conexao.prepareStatement("insert into denuncia( protocolo, foto, denunciante, descricao_Incidente, categoria, data, Autor_Crime, status_denuncia) values (? ,?, ?, ?, ?, ?, ?, ?) RETURNING id, protocolo");
+            st = conexao.prepareStatement("insert into denuncia( protocolo, denunciante, descricao_Incidente, categoria, data, Autor_Crime, status_denuncia) values (? ,?, ?, ?, ?, ?, ?) RETURNING id, protocolo");
             st.setString(1, denuncia.getProtocolo());
-            st.setBinaryStream(2, fis);
-            st.setString(3, denuncia.getDenuciante());
-            st.setString(4, denuncia.getDescricaoIncidente());
-            st.setString(5, denuncia.getCategoria().toString());
-            st.setDate(6, denuncia.getData());
-            st.setString(7, denuncia.getAutorCrime());
-            st.setString(8, denuncia.getStatusDenuncia().toString());
+            st.setString(2, denuncia.getDenuciante());
+            st.setString(3, denuncia.getDescricaoIncidente());
+            st.setString(4, denuncia.getCategoria().toString());
+            st.setDate(5, denuncia.getData());
+            st.setString(6, denuncia.getAutorCrime());
+            st.setString(7, denuncia.getStatusDenuncia().toString());
 
             ResultSet generatedKeys = st.executeQuery();
 
@@ -72,12 +74,14 @@ public class DenunciaDao implements IDenunciaDao {
                     status = rs.getString("status_denuncia");
                     nome = rs.getString("nome");
                 }
+                
+                System.out.println(emailUsuario);
                 EmailService service = new EmailService();
                 String assunto = "Email referente ao protocolo: " + protocolo + " ECOWARRIORS";
                 String mensagem = "Olá, " + nome + " essa mensagem é referente a denúncia que você enviou para nós,o status dela é: " + formatarDenuncia(status);
-                service.sendMail(denuncia.getDenuciante(),assunto,mensagem);
+                service.sendMail(emailUsuario,assunto,mensagem);
 
-                stEndereco = conexao.prepareStatement("insert into Endereco(protocolo_denuncia, cep, bairro, rua, municipio, ponto_referencia) values (?, ?, ?, ?, ?, ?) RETURNING id");
+                stEndereco = conexao.prepareStatement("insert into Endereco(protocolo_denuncia, cep, bairro, rua, municipio, ponto_referencia) values (?, ?, ?, ?, ?, ?)");
                 stEndereco.setString(1, protocolo);
                 stEndereco.setString(2, endereco.getCEP());
                 stEndereco.setString(3, endereco.getBairro());
@@ -85,6 +89,23 @@ public class DenunciaDao implements IDenunciaDao {
                 stEndereco.setString(5, endereco.getMunicipio());
                 stEndereco.setString(6, endereco.getPontoReferencia());
                 stEndereco.executeUpdate();
+                
+                String pastaProtocolo = protocolo.replace("/","-");
+                String caminhoDaPasta = "./src/main/java/com/ecowarriors/pasta_protocolo/"+pastaProtocolo;
+                File pasta =  new File(caminhoDaPasta);
+                File[] arquivos = pasta.listFiles();
+                System.out.println(caminhoDaPasta);
+                for(File arquivo :  arquivos){
+                String arquivoPasta = caminhoDaPasta +"/"+arquivo.getName();
+                System.out.println(arquivo.getName());
+                stImagem = conexao.prepareStatement("insert into imagens (hash_imagem,caminho_imagem,id_protocolo)values(?,?,?)");
+                stImagem.setString(1, arquivo.getName());
+                stImagem.setString(2,arquivoPasta);
+                stImagem.setString(3, protocolo);
+                stImagem.executeUpdate();
+                }
+                
+                
             }
         } catch (Exception erro) {
             System.out.println(erro);
@@ -95,7 +116,7 @@ public class DenunciaDao implements IDenunciaDao {
     public void consultarDenuncia(Denuncia denuncia) throws Exception {
         throw new UnsupportedOperationException("Unimplemented method 'consultarDenuncia'");
     }
-
+    
     @Override
     public List<Denuncia> listagemDenuncia() throws Exception {
         List<Denuncia> denuncias = new ArrayList<>();
@@ -195,5 +216,67 @@ public class DenunciaDao implements IDenunciaDao {
         System.out.println(anoAtual);
     }
 
+    @Override
+    public List<Denuncia> tabelaDenunciasUsuarios(String cpf) throws Exception {
+        try {
+            List<Denuncia> denuncias = new ArrayList<>();
 
+            String sql = "SELECT protocolo, denunciante,status_denuncia FROM Denuncia where denunciante = ?";
+            PreparedStatement ps = conexao.prepareStatement(sql);  
+                    ps.setString(1, cpf);
+
+            ResultSet rs = ps.executeQuery(); 
+                while (rs.next()) {
+                    Denuncia DenunciaLista = new Denuncia();
+                    DenunciaLista.setProtocolo(rs.getString("protocolo"));
+                    DenunciaLista.setDenuciante(rs.getString("denunciante"));                  
+                    DenunciaLista.setStatusDenuncia(StatusDenuncia.valueOf(rs.getString("status_denuncia")));
+                    denuncias.add(DenunciaLista);
+                }
+                System.out.println(denuncias.get(0));
+            return denuncias;
+    }catch(Exception e){
+            System.out.println(e);
+    }
+        return null;
 }
+
+    @Override
+    public  String[]respostaDenuncia(String protocolo) throws Exception {
+        try {
+            String []listaDeParametros = new String[9];
+            String sql = "select endereco.*, \n" +
+                        "	denuncia.* \n" +
+                        "	from denuncia \n" +
+                        "	inner join endereco on endereco.protocolo_denuncia = denuncia.protocolo \n" +
+                        "	where denuncia.protocolo =?";
+            PreparedStatement stUpdate = conexao.prepareStatement(sql);
+            stUpdate.setString(1, protocolo);
+            ResultSet rs = stUpdate.executeQuery(); 
+
+            while (rs.next()) {
+                
+    listaDeParametros[0] = rs.getString("cep");
+    listaDeParametros[1] = rs.getString("bairro");
+    listaDeParametros[2] = rs.getString("rua");
+    listaDeParametros[3] = rs.getString("municipio");
+    listaDeParametros[4] = rs.getString("ponto_referencia");
+    listaDeParametros[5] = Categoria.valueOf(rs.getString("categoria")).toString();
+    listaDeParametros[6] = rs.getString("descricao_incidente");
+    listaDeParametros[7] = rs.getString("avaliacao_gestor");
+    listaDeParametros[8] = rs.getDate("data").toString();
+
+    // Imprime os valores do CEP para verificar
+}
+
+            
+            return listaDeParametros;
+            
+    }catch(Exception e){
+            System.out.println(e);
+    }
+        return null;
+}
+}
+
+

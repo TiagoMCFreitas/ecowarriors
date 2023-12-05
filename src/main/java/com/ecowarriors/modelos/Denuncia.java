@@ -15,9 +15,18 @@ public class Denuncia {
     private String descricaoIncidente;
     private StatusDenuncia statusDenuncia;
     private Categoria categoria;
+    private String respostaGestor;
+
+    public String getRespostaGestor() {
+        return respostaGestor;
+    }
+
+    public void setRespostaGestor(String respostaGestor) {
+        this.respostaGestor = respostaGestor;
+    }
     private Date data;
     private String AutorCrime;
-
+    
     public Denuncia() {
     }
 
@@ -115,7 +124,7 @@ public class Denuncia {
 
     @Override
     public String toString() {
-        return "Denuncia{" + "id=" + id + ", denuciante=" + denuciante + ", endereco=" + enderecoIncidente + ", descricao=" + descricaoIncidente + ", categoria=" + categoria + ", data=" + data + ", AutorCrime=" + AutorCrime + '}';
+        return "Denuncia{" + "id=" + id + ", denuciante=" + denuciante + ", endereco=" + enderecoIncidente + ", protocolo=" +protocolo +  "descricao=" + descricaoIncidente + ", categoria=" + categoria + ", data=" + data + ", AutorCrime=" + AutorCrime  + '}';
     }
 
 }

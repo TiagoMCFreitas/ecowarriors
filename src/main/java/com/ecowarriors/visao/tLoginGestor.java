@@ -430,8 +430,8 @@ public class tLoginGestor extends javax.swing.JFrame {
                 } else {
                     senha = jTextField1_Senha.getText();
                 }
-                boolean isLiberado = usuarioDao.logarUsuarios(jTextField1_Usuario.getText(), senha);
-                if (isLiberado) {
+                String isLiberado = usuarioDao.logarUsuarios(jTextField1_Usuario.getText(), senha);
+                if (isLiberado.equals("GESTOR")) {
 
                     String dadoParaPesquisa = jTextField1_Usuario.getText();
                     tGestorLogado gestorLogado = new tGestorLogado();
@@ -442,7 +442,7 @@ public class tLoginGestor extends javax.swing.JFrame {
                     this.dispose();
 
                 } else {
-                    JOptionPane.showMessageDialog(rootPane, "Usuario ou senha incorretos!");
+                    JOptionPane.showMessageDialog(rootPane, "Usuario ou senha incorretos!(Verifique se seu usuário é de analista)");
                 }
             }
 

@@ -163,8 +163,8 @@ public class tLoginDenunciantes extends javax.swing.JFrame {
             else{
                 senha = jTextField1_Senha.getText();
             }
-            boolean isLiberado = usuarioDao.logarUsuarios(jTextField1_Usuario.getText(),senha);
-            if(isLiberado){
+            String isLiberado = usuarioDao.logarUsuarios(jTextField1_Usuario.getText(),senha);
+            if(isLiberado != null){
                 
                 String dadoParaPesquisa = jTextField1_Usuario.getText();
                 tUsuarioLogado usuarioLogado = new tUsuarioLogado();
