@@ -232,6 +232,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jLabel39.setText("CADASTRAR DENÚNCIA");
         jFrame1_DenunciaRespondida.getContentPane().add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 40, 430, 50));
 
+        jFormattedTextField1_CEPDenunciaRespondida.setEditable(false);
         jFormattedTextField1_CEPDenunciaRespondida.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
         jFormattedTextField1_CEPDenunciaRespondida.setForeground(new java.awt.Color(0, 102, 0));
         try {
@@ -247,16 +248,19 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jLabel40.setText("RUA");
         jFrame1_DenunciaRespondida.getContentPane().add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 350, 60, 40));
 
+        jTextField1_pontoReferenciaDenunciaRespondida.setEditable(false);
         jTextField1_pontoReferenciaDenunciaRespondida.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_pontoReferenciaDenunciaRespondida.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_pontoReferenciaDenunciaRespondida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         jFrame1_DenunciaRespondida.getContentPane().add(jTextField1_pontoReferenciaDenunciaRespondida, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 480, 580, 40));
 
+        jTextField1_ruaDenunciaRespondida.setEditable(false);
         jTextField1_ruaDenunciaRespondida.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_ruaDenunciaRespondida.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_ruaDenunciaRespondida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         jFrame1_DenunciaRespondida.getContentPane().add(jTextField1_ruaDenunciaRespondida, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 350, 340, 40));
 
+        jTextField1_RESPOSTADenunciaRespondida.setEditable(false);
         jTextField1_RESPOSTADenunciaRespondida.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_RESPOSTADenunciaRespondida.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_RESPOSTADenunciaRespondida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
@@ -333,11 +337,13 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jComboBoxMunicipiosDenunciaRespondida.setDoubleBuffered(true);
         jFrame1_DenunciaRespondida.getContentPane().add(jComboBoxMunicipiosDenunciaRespondida, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 400, 330, 40));
 
+        jTextField1_bairroDenunciaRespondida.setEditable(false);
         jTextField1_bairroDenunciaRespondida.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_bairroDenunciaRespondida.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_bairroDenunciaRespondida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         jFrame1_DenunciaRespondida.getContentPane().add(jTextField1_bairroDenunciaRespondida, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 300, 340, 40));
 
+        jTextArea1_descricaoDenunciaRespondida.setEditable(false);
         jTextArea1_descricaoDenunciaRespondida.setColumns(20);
         jTextArea1_descricaoDenunciaRespondida.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextArea1_descricaoDenunciaRespondida.setForeground(new java.awt.Color(0, 102, 0));
@@ -347,6 +353,7 @@ public class tUsuarioLogado extends javax.swing.JFrame {
 
         jFrame1_DenunciaRespondida.getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 240, 580, 130));
 
+        jFormattedTextField1_dataDenunciaRespondida.setEditable(false);
         jFormattedTextField1_dataDenunciaRespondida.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         jFormattedTextField1_dataDenunciaRespondida.setForeground(new java.awt.Color(0, 102, 0));
         try {

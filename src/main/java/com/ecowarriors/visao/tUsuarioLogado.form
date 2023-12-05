@@ -57,6 +57,7 @@
         </Component>
         <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField1_CEPDenunciaRespondida">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder roundedCorners="true" thickness="3"/>
@@ -96,6 +97,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField1_pontoReferenciaDenunciaRespondida">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Serif" size="26" style="3"/>
             </Property>
@@ -116,6 +118,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField1_ruaDenunciaRespondida">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Serif" size="26" style="3"/>
             </Property>
@@ -136,6 +139,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField1_RESPOSTADenunciaRespondida">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Serif" size="26" style="3"/>
             </Property>
@@ -376,6 +380,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="jTextField1_bairroDenunciaRespondida">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Serif" size="26" style="3"/>
             </Property>
@@ -408,6 +413,7 @@
           <SubComponents>
             <Component class="javax.swing.JTextArea" name="jTextArea1_descricaoDenunciaRespondida">
               <Properties>
+                <Property name="editable" type="boolean" value="false"/>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Serif" size="26" style="3"/>
@@ -427,6 +433,7 @@
         </Container>
         <Component class="javax.swing.JFormattedTextField" name="jFormattedTextField1_dataDenunciaRespondida">
           <Properties>
+            <Property name="editable" type="boolean" value="false"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder thickness="3"/>
