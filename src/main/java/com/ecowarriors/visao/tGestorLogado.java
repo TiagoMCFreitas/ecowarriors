@@ -1,9 +1,12 @@
 package com.ecowarriors.visao;
 
+import com.ecowarriors.Enum.StatusDenuncia;
 import com.ecowarriors.ferramentas.ConexaoBD;
 import com.ecowarriors.ferramentas.JTableRenderer;
 import com.ecowarriors.modelos.Denuncia;
 import com.ecowarriors.modelos.Usuarios;
+import com.ecowarriors.persistencia.DenunciaDao;
+import com.ecowarriors.persistencia.IDenunciaDao;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
@@ -39,7 +42,7 @@ public class tGestorLogado extends javax.swing.JFrame {
     }
 
     public void personalizarTabela() throws Exception {
-        
+
     }
 
     public void ExportarDados(Usuarios usuario) {
@@ -92,7 +95,6 @@ public class tGestorLogado extends javax.swing.JFrame {
             jTable1_Denuncias.getColumnModel().getColumn(7).setWidth(130);
             jTable1_Denuncias.getColumnModel().getColumn(7).setMinWidth(130);
             jTable1_Denuncias.getColumnModel().getColumn(7).setMaxWidth(130);
-            
 
         } catch (Exception e) {
 
@@ -487,9 +489,9 @@ public class tGestorLogado extends javax.swing.JFrame {
     public void buscarDadosUsuarioLogado() throws SQLException {
         String cpf = jTextField1_Email.getText();
         String sql = "SELECT * from usuarios where cpf = ?";
-        try ( PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
             preparedStatement.setString(1, cpf);
-            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     String nome = resultSet.getString("nome");
                     jTextField1_nomeCompleto.setText(nome);
@@ -508,9 +510,9 @@ public class tGestorLogado extends javax.swing.JFrame {
     public void BuscarDadosUsuarioEmail() throws SQLException {
         String email = jTextField1_Email.getText();
         String sql = "SELECT * from usuarios where EMAIL = ?";
-        try ( PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
+        try (PreparedStatement preparedStatement = conexao.prepareStatement(sql)) {
             preparedStatement.setString(1, email);
-            try ( ResultSet resultSet = preparedStatement.executeQuery()) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     String nome = resultSet.getString("nome");
                     jTextField1_nomeCompleto.setText(nome);
@@ -564,14 +566,35 @@ public class tGestorLogado extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel6MouseEntered
 
     private void jTable1_DenunciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1_DenunciasMouseClicked
-        jTextField1_protocoloEscondido.setText(jTable1_Denuncias.getValueAt(jTable1_Denuncias.getSelectedRow(), 0).toString());
-        jFrame1_avaliacaoFinalDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
-        jFrame1_avaliacaoFinalDenuncia.setLocationRelativeTo(null);
-        jFrame1_avaliacaoFinalDenuncia.setVisible(true);
-        jFrame1_avaliarDenuncia.dispose();
+        try {
+            jTextField1_protocoloEscondido.setText(jTable1_Denuncias.getValueAt(jTable1_Denuncias.getSelectedRow(), 0).toString());
+            String protocolo = jTable1_Denuncias.getValueAt(jTable1_Denuncias.getSelectedRow(), 0).toString();
+            System.out.println(protocolo);
+
+            IDenunciaDao objetoDao = new DenunciaDao();
+            
+            if (jTable1_Denuncias.getValueAt(jTable1_Denuncias.getSelectedRow(), 5).toString().equals("EM_PROCESSAMENTO")) {
+                imprimirDadosNaGrid();
+                jFrame1_avaliacaoFinalDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
+                jFrame1_avaliacaoFinalDenuncia.setLocationRelativeTo(null);
+                jFrame1_avaliacaoFinalDenuncia.setVisible(true);
+                jFrame1_avaliarDenuncia.dispose();
+
+            } else {
+                objetoDao.atualizarDenuncia(StatusDenuncia.EM_PROCESSAMENTO.toString(), protocolo);
+                jFrame1_avaliacaoFinalDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
+                jFrame1_avaliacaoFinalDenuncia.setLocationRelativeTo(null);
+                jFrame1_avaliacaoFinalDenuncia.setVisible(true);
+                jFrame1_avaliarDenuncia.dispose();
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(tGestorLogado.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jTable1_DenunciasMouseClicked
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        imprimirDadosNaGrid();
         jFrame1_avaliarDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
         jFrame1_avaliarDenuncia.setLocationRelativeTo(null);
         jFrame1_avaliarDenuncia.setVisible(true);

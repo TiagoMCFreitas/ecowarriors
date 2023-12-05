@@ -60,8 +60,7 @@ public class DenunciaDao implements IDenunciaDao {
                         "denuncia.status_denuncia " +
                         "from denuncia " +
                         "inner join usuarios on usuarios.cpf = denunciante " +
-                        "where denuncia.protocolo = ? " +
-                        "order by data_criacao desc";
+                        "where denuncia.protocolo = ? ";
                 PreparedStatement stSearch = conexao.prepareStatement(sqlParaEmail);
                 stSearch.setString(1, protocolo);
                 ResultSet rs = stSearch.executeQuery();
@@ -115,6 +114,25 @@ public class DenunciaDao implements IDenunciaDao {
 
         return denuncias;
     }
+    @Override
+    public List<Denuncia> listagemDenunciaOrdernada() throws Exception {
+        List<Denuncia> denuncias = new ArrayList<>();
+
+            String sql = "SELECT id, protocolo, denunciante FROM Denuncia order by protocolo desc";
+            try ( PreparedStatement ps = conexao.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Denuncia DenunciaLista = new Denuncia();
+                    DenunciaLista.setId(rs.getInt("id"));
+                    DenunciaLista.setProtocolo(rs.getString("protocolo"));
+                    DenunciaLista.setDenuciante(rs.getString("denunciante"));                  
+                    denuncias.add(DenunciaLista);
+                }
+            }
+        
+
+        return denuncias;
+    }
+
 
     @Override
     public void atualizarDenuncia(String statusDenuncia, String protocolo) throws Exception {
@@ -127,14 +145,13 @@ public class DenunciaDao implements IDenunciaDao {
 
 
 
-            String sqlParaEmail = "select usuarios.nome , " +
+        String sqlParaEmail = "select usuarios.nome , " +
                     "usuarios.email, " +
                     "denuncia.protocolo, " +
                     "denuncia.status_denuncia " +
                     "from denuncia " +
-                    "inner join usuarios on usuarios.cpf = denunciante " +
-                    "where denuncia.protocolo = ? " +
-                    "order by data_criacao desc";
+                    "inner join usuarios on usuarios.cpf = denuncia.denunciante " +
+                    "where denuncia.protocolo = ?";
         PreparedStatement stSearch = conexao.prepareStatement(sqlParaEmail);
         stSearch.setString(1, protocolo);
         ResultSet rs = stSearch.executeQuery();
@@ -146,6 +163,7 @@ public class DenunciaDao implements IDenunciaDao {
             status = rs.getString("status_denuncia");
             nome = rs.getString("nome");
         }
+        System.out.println(emailUsuario);
         EmailService service = new EmailService();
         String assunto = "Email referente ao protocolo: " + protocolo + " ECOWARRIORS";
         String mensagem = "Olá, " + nome + " essa mensagem é referente a denúncia que você enviou para nós,o status dela é: " + formatarDenuncia(status);

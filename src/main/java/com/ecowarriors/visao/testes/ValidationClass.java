@@ -22,7 +22,7 @@ public class ValidationClass {
 
 
         IDenunciaDao denuncia = new DenunciaDao();
-        denuncia.atualizarDenuncia(StatusDenuncia.RESPONDIDA.toString(), "1/2023");
+        denuncia.atualizarDenuncia(StatusDenuncia.EM_PROCESSAMENTO.toString(), "2/2023");
     }
 
 }
