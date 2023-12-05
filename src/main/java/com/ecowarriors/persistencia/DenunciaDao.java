@@ -150,7 +150,7 @@ public class DenunciaDao implements IDenunciaDao {
             stEndereco.setString(5, endereco.getMunicipio());
             stEndereco.setString(6, endereco.getPontoReferencia());
             stEndereco.executeUpdate();
-            
+
         } catch (Exception erro) {
 
         }

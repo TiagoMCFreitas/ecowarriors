@@ -18,6 +18,7 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
@@ -54,10 +55,10 @@ public class tGestorLogado extends javax.swing.JFrame {
             jTextField1_DATA.setEnabled(false);
             jTextField1_PROTOCOLO.setEnabled(false);
 
-            carregarComboBoxTipoDenuncia();
+            carregarComboBox();
 
             jLabel44.setVisible(false);
-            jComboBox1_tipoDenuncia.setVisible(false);
+            jComboBox_categoriaDenuncia.setVisible(false);
 
         } catch (Exception ex) {
             Logger.getLogger(tGestorLogado.class.getName()).log(Level.SEVERE, null, ex);
@@ -219,6 +220,7 @@ public class tGestorLogado extends javax.swing.JFrame {
         jTextField1_rua = new javax.swing.JTextField();
         jTextField1_bairro = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
+        jComboBox_categoriaDenuncia = new javax.swing.JComboBox<>();
         jLabel34 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jFormattedTextField1_CEP = new javax.swing.JFormattedTextField();
@@ -227,7 +229,6 @@ public class tGestorLogado extends javax.swing.JFrame {
         jLabel44 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1_descricaoDenuncia = new javax.swing.JTextArea();
-        jComboBox1_tipoDenuncia = new javax.swing.JComboBox<>();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1_avaliacaoAnalista = new javax.swing.JTextArea();
         jRadioButton1_naoAlterarDenuncia = new javax.swing.JRadioButton();
@@ -500,6 +501,17 @@ public class tGestorLogado extends javax.swing.JFrame {
         jLabel28.setText("BAIRRO");
         jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 120, 40));
 
+        jComboBox_categoriaDenuncia.setFont(new java.awt.Font("Serif", 3, 22)); // NOI18N
+        jComboBox_categoriaDenuncia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jComboBox_categoriaDenuncia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jComboBox_categoriaDenuncia.setDoubleBuffered(true);
+        jComboBox_categoriaDenuncia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_categoriaDenunciaActionPerformed(evt);
+            }
+        });
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jComboBox_categoriaDenuncia, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 620, 280, 50));
+
         jLabel34.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(0, 102, 0));
         jLabel34.setText("PROTOCOLO");
@@ -531,7 +543,7 @@ public class tGestorLogado extends javax.swing.JFrame {
         jLabel44.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel44.setForeground(new java.awt.Color(0, 102, 0));
         jLabel44.setText("TIPO DA DENÚNCIA");
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 590, 270, -1));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 580, 270, -1));
 
         jTextArea1_descricaoDenuncia.setEditable(false);
         jTextArea1_descricaoDenuncia.setColumns(20);
@@ -542,12 +554,6 @@ public class tGestorLogado extends javax.swing.JFrame {
         jScrollPane3.setViewportView(jTextArea1_descricaoDenuncia);
 
         jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 170, 580, 130));
-
-        jComboBox1_tipoDenuncia.setFont(new java.awt.Font("Serif", 3, 22)); // NOI18N
-        jComboBox1_tipoDenuncia.setForeground(new java.awt.Color(0, 102, 0));
-        jComboBox1_tipoDenuncia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        jComboBox1_tipoDenuncia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jComboBox1_tipoDenuncia, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 630, 280, 50));
 
         jTextArea1_avaliacaoAnalista.setColumns(20);
         jTextArea1_avaliacaoAnalista.setFont(new java.awt.Font("Serif", 3, 24)); // NOI18N
@@ -989,7 +995,8 @@ public class tGestorLogado extends javax.swing.JFrame {
         if (jRadioButton2_simAlterarDenuncia.isSelected()) {
             jRadioButton1_naoAlterarDenuncia.setSelected(false);
             jLabel44.setVisible(true);
-            jComboBox1_tipoDenuncia.setVisible(true);
+            jComboBox_categoriaDenuncia.setVisible(true);
+
         }
     }//GEN-LAST:event_jRadioButton2_simAlterarDenunciaActionPerformed
 
@@ -997,16 +1004,49 @@ public class tGestorLogado extends javax.swing.JFrame {
         if (jRadioButton1_naoAlterarDenuncia.isSelected()) {
             jRadioButton2_simAlterarDenuncia.setSelected(false);
             jLabel44.setVisible(false);
-            jComboBox1_tipoDenuncia.setVisible(false);
+            jComboBox_categoriaDenuncia.setVisible(false);
+
         }
     }//GEN-LAST:event_jRadioButton1_naoAlterarDenunciaActionPerformed
 
     private void jButton1_concluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1_concluirActionPerformed
         try {
-            
-            
+
             IDenunciaDao objetoDao = new DenunciaDao();
             objetoDao.atualizarDenuncia(StatusDenuncia.RESPONDIDA.toString(), jTextField1_PROTOCOLO.getText());
+
+            if (jRadioButton2_simAlterarDenuncia.isSelected()) {
+
+                String update = "UPDATE Denuncia SET avaliacao_gestor = ?, categoria = ? where protocolo = ?";
+                try ( PreparedStatement stUpdate = conexao.prepareStatement(update)) {
+
+                    stUpdate.setString(1, jTextArea1_avaliacaoAnalista.getText());
+                    stUpdate.setString(2, jComboBox_categoriaDenuncia.getSelectedItem().toString());
+                    stUpdate.setString(3, jTextField1_PROTOCOLO.getText());
+                    stUpdate.executeUpdate();
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(tGestorLogado.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else if (jRadioButton1_naoAlterarDenuncia.isSelected()) {
+                String update = "UPDATE Denuncia SET avaliacao_gestor = ?where protocolo = ?";
+                try ( PreparedStatement stUpdate = conexao.prepareStatement(update)) {
+
+                    stUpdate.setString(1, jTextArea1_avaliacaoAnalista.getText());
+                    stUpdate.setString(2, jTextField1_PROTOCOLO.getText());
+                    stUpdate.executeUpdate();
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(tGestorLogado.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            imprimirDadosNaGrid();
+            JOptionPane.showMessageDialog(rootPane, "Denuncia analisada com sucesso!");
+            jFrame1_avaliarDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
+            jFrame1_avaliarDenuncia.setLocationRelativeTo(null);
+            jFrame1_avaliarDenuncia.setVisible(true);
+            jFrame1_avaliacaoFinalDenuncia.dispose();
+
         } catch (Exception ex) {
             Logger.getLogger(tGestorLogado.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1015,6 +1055,10 @@ public class tGestorLogado extends javax.swing.JFrame {
     private void jButton6_verImagensAnexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6_verImagensAnexoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton6_verImagensAnexoActionPerformed
+
+    private void jComboBox_categoriaDenunciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_categoriaDenunciaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_categoriaDenunciaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1066,7 +1110,7 @@ public class tGestorLogado extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6_verImagensAnexo;
-    private javax.swing.JComboBox<String> jComboBox1_tipoDenuncia;
+    private javax.swing.JComboBox<Categoria> jComboBox_categoriaDenuncia;
     private javax.swing.JFormattedTextField jFormattedTextField1_CEP;
     private javax.swing.JFormattedTextField jFormattedTextField1_CPF;
     private javax.swing.JFormattedTextField jFormattedTextField1_Telefone;
@@ -1138,13 +1182,7 @@ public class tGestorLogado extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1_tipoDaDenunciaSelecionada;
     // End of variables declaration//GEN-END:variables
 
-    private void carregarComboBoxTipoDenuncia() {
-        Categoria[] values = Categoria.values();
-        String[] categoriaString = new String[values.length];
-        for (int i = 0; i < values.length; i++) {
-            categoriaString[i] = values[i].toString();
-        }
-        jComboBox1_tipoDenuncia.setModel(new DefaultComboBoxModel<>(categoriaString));
+    private void carregarComboBox() {
+        jComboBox_categoriaDenuncia.setModel(new DefaultComboBoxModel<>(Categoria.values()));
     }
-
 }

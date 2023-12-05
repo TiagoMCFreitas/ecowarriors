@@ -49,13 +49,11 @@ public class tUsuarioLogado extends javax.swing.JFrame {
 
     public tUsuarioLogado() {
         try {
-            carregarComboBox();
+            
             categoriaDenuncia = Categoria.ADMINISTRACAO_AMBIENTAL + "";
             ApiIBGEService service = new ApiIBGEService();
             List<String> lista = service.listaDeMunicipios();
-            for (int i = 0; i < lista.size(); i++) {
-                jComboBoxMunicipios.addItem(lista.get(i));
-            }
+
             conexao = ConexaoBD.getConexao();
             initComponents();
             setLocationRelativeTo(null);
@@ -69,6 +67,12 @@ public class tUsuarioLogado extends javax.swing.JFrame {
             IDenunciaDao objetoDao = new DenunciaDao();
             String cpfUsuario = jFormattedTextField1_CPF.getText().replace(".", "").replace("-", "");
             imprimirDadosNaGrid();
+            
+            for (int i = 0; i < lista.size(); i++) {
+                jComboBoxMunicipios.addItem(lista.get(i));
+            }
+            carregarComboBox();
+            
             jTextArea1_descricao.setLineWrap(true);
             jTextArea1_descricao.setWrapStyleWord(true);
 
@@ -586,8 +590,10 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jLabel24.setText("RECONHECE O AUTOR DO CRIME?");
         jFrame1_CadastrarDenuncia.getContentPane().add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 480, 480, -1));
 
-        jComboBox_categoriaDenuncia.setFont(new java.awt.Font("Segoe UI", 2, 26)); // NOI18N
+        jComboBox_categoriaDenuncia.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jComboBox_categoriaDenuncia.setForeground(new java.awt.Color(0, 102, 0));
         jComboBox_categoriaDenuncia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jComboBox_categoriaDenuncia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jComboBox_categoriaDenuncia.setDoubleBuffered(true);
         jComboBox_categoriaDenuncia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -650,15 +656,17 @@ public class tUsuarioLogado extends javax.swing.JFrame {
         jLabel29.setText("MUNICIPIO");
         jFrame1_CadastrarDenuncia.getContentPane().add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, 160, 40));
 
-        jComboBoxMunicipios.setFont(new java.awt.Font("Segoe UI", 2, 26)); // NOI18N
+        jComboBoxMunicipios.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jComboBoxMunicipios.setForeground(new java.awt.Color(0, 102, 0));
         jComboBoxMunicipios.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jComboBoxMunicipios.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jComboBoxMunicipios.setDoubleBuffered(true);
         jComboBoxMunicipios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxMunicipiosActionPerformed(evt);
             }
         });
-        jFrame1_CadastrarDenuncia.getContentPane().add(jComboBoxMunicipios, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, 330, 40));
+        jFrame1_CadastrarDenuncia.getContentPane().add(jComboBoxMunicipios, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 350, 340, 40));
 
         jTextField1_bairro.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_bairro.setForeground(new java.awt.Color(0, 102, 0));
