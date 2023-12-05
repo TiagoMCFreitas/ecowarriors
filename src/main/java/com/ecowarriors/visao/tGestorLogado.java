@@ -7,19 +7,30 @@ import com.ecowarriors.modelos.Denuncia;
 import com.ecowarriors.modelos.Usuarios;
 import com.ecowarriors.persistencia.DenunciaDao;
 import com.ecowarriors.persistencia.IDenunciaDao;
+import com.ecowarriors.visao.testes.ImageCarousel;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 
 public class tGestorLogado extends javax.swing.JFrame {
@@ -27,6 +38,8 @@ public class tGestorLogado extends javax.swing.JFrame {
     private Connection conexao = null;
     String protocoloGeral;
     String categoriaDenuncia;
+    private List<ImageIcon> images;
+    private int currentIndex;
 
     public tGestorLogado() {
         try {
@@ -37,6 +50,8 @@ public class tGestorLogado extends javax.swing.JFrame {
             jTextArea1_avaliacaoAnalista.setWrapStyleWord(true);
             jTextArea1_descricaoDenuncia.setLineWrap(true);
             jTextArea1_descricaoDenuncia.setWrapStyleWord(true);
+            jTextArea1_descricaoDenuncia1.setLineWrap(true);
+            jTextArea1_descricaoDenuncia1.setWrapStyleWord(true);
 
             jTextField1_Email.setEnabled(false);
             jTextField1_nomeCompleto.setEnabled(false);
@@ -54,6 +69,18 @@ public class tGestorLogado extends javax.swing.JFrame {
             jTextField1_tipoDaDenunciaSelecionada.setEnabled(false);
             jTextField1_DATA.setEnabled(false);
             jTextField1_PROTOCOLO.setEnabled(false);
+            jTextField1_municipioo1.setEnabled(false);
+            jTextArea1_avaliacaoAnalista1.setEnabled(false);
+
+            jFormattedTextField1_CEP1.setEnabled(false);
+            jTextField1_bairro1.setEnabled(false);
+            jTextField1_rua1.setEnabled(false);
+            jTextField1_municipioo.setEnabled(false);
+            jTextField1_pontoReferencia1.setEnabled(false);
+            jTextArea1_descricaoDenuncia1.setEnabled(false);
+            jTextField1_DATA1.setEnabled(false);
+            jTextField1_tipoDaDenunciaSelecionada1.setEnabled(false);
+            jTextField1_PROTOCOLO1.setEnabled(false);
 
             carregarComboBox();
 
@@ -216,6 +243,8 @@ public class tGestorLogado extends javax.swing.JFrame {
         jTextField1_pontoReferencia = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
+        jTextField1_municipioo1 = new javax.swing.JTextField();
+        jLabel66 = new javax.swing.JLabel();
         jTextField1_PROTOCOLO = new javax.swing.JTextField();
         jTextField1_rua = new javax.swing.JTextField();
         jTextField1_bairro = new javax.swing.JTextField();
@@ -248,6 +277,39 @@ public class tGestorLogado extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable1_ListaDeDenuncias = new javax.swing.JTable();
         jLabel30 = new javax.swing.JLabel();
+        jFrame1_verDenunciaListada = new javax.swing.JFrame();
+        jButton6 = new javax.swing.JButton();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jTextField1_DATA1 = new javax.swing.JTextField();
+        jTextField1_tipoDaDenunciaSelecionada1 = new javax.swing.JTextField();
+        jLabel37 = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
+        jTextField1_PROTOCOLO1 = new javax.swing.JTextField();
+        jTextField1_rua1 = new javax.swing.JTextField();
+        jTextField1_bairro1 = new javax.swing.JTextField();
+        jLabel40 = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        jLabel42 = new javax.swing.JLabel();
+        jFormattedTextField1_CEP1 = new javax.swing.JFormattedTextField();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTextArea1_descricaoDenuncia1 = new javax.swing.JTextArea();
+        jTextField1_pontoReferencia1 = new javax.swing.JTextField();
+        jTextField1_municipioo = new javax.swing.JTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTextArea1_avaliacaoAnalista1 = new javax.swing.JTextArea();
+        jLabel54 = new javax.swing.JLabel();
+        jLabel59 = new javax.swing.JLabel();
+        jLabel65 = new javax.swing.JLabel();
+        jLabel49 = new javax.swing.JLabel();
+        jLabel53 = new javax.swing.JLabel();
+        jLabel43 = new javax.swing.JLabel();
+        jLabel52 = new javax.swing.JLabel();
+        jLabel48 = new javax.swing.JLabel();
+        jDialog1 = new javax.swing.JDialog();
+        jlabel_imagensCarrossel = new javax.swing.JLabel();
+        jFrame1_carrosel = new javax.swing.JFrame();
+        jlabel_imagensCarrossel1 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -430,6 +492,12 @@ public class tGestorLogado extends javax.swing.JFrame {
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
         jFrame1_avaliarDenuncia.getContentPane().add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
+
+        jTextField1_protocoloEscondido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1_protocoloEscondidoActionPerformed(evt);
+            }
+        });
         jFrame1_avaliarDenuncia.getContentPane().add(jTextField1_protocoloEscondido, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 510, 140, 100));
 
         jFrame1_avaliacaoFinalDenuncia.setUndecorated(true);
@@ -479,27 +547,37 @@ public class tGestorLogado extends javax.swing.JFrame {
         jLabel27.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(0, 102, 0));
         jLabel27.setText("RUA");
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, 60, 40));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 60, 40));
+
+        jTextField1_municipioo1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_municipioo1.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_municipioo1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jTextField1_municipioo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 320, 340, 40));
+
+        jLabel66.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel66.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel66.setText("MUNICIPIO");
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel66, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 320, 160, 40));
 
         jTextField1_PROTOCOLO.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_PROTOCOLO.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_PROTOCOLO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jTextField1_PROTOCOLO, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 180, 40));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jTextField1_PROTOCOLO, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, 180, 40));
 
         jTextField1_rua.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_rua.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_rua.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jTextField1_rua, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 320, 340, 40));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jTextField1_rua, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 270, 340, 40));
 
         jTextField1_bairro.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
         jTextField1_bairro.setForeground(new java.awt.Color(0, 102, 0));
         jTextField1_bairro.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jTextField1_bairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 270, 340, 40));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jTextField1_bairro, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, 340, 40));
 
         jLabel28.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel28.setForeground(new java.awt.Color(0, 102, 0));
         jLabel28.setText("BAIRRO");
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 270, 120, 40));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 220, 120, 40));
 
         jComboBox_categoriaDenuncia.setFont(new java.awt.Font("Serif", 3, 22)); // NOI18N
         jComboBox_categoriaDenuncia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
@@ -515,12 +593,12 @@ public class tGestorLogado extends javax.swing.JFrame {
         jLabel34.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(0, 102, 0));
         jLabel34.setText("PROTOCOLO");
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 180, 40));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 180, 40));
 
         jLabel29.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel29.setForeground(new java.awt.Color(0, 102, 0));
         jLabel29.setText("CEP");
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 220, 70, 40));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 170, 70, 40));
 
         jFormattedTextField1_CEP.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
         jFormattedTextField1_CEP.setForeground(new java.awt.Color(0, 102, 0));
@@ -530,10 +608,10 @@ public class tGestorLogado extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         jFormattedTextField1_CEP.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jFormattedTextField1_CEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 220, 190, 40));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jFormattedTextField1_CEP, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 170, 190, 40));
 
         jLabel31.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "ENDEREÇO DO INCIDENTE", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 24), new java.awt.Color(0, 102, 0))); // NOI18N
-        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 170, 620, 290));
+        jFrame1_avaliacaoFinalDenuncia.getContentPane().add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 120, 620, 340));
 
         jLabel47.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
         jLabel47.setForeground(new java.awt.Color(0, 102, 0));
@@ -691,6 +769,158 @@ public class tGestorLogado extends javax.swing.JFrame {
         jLabel30.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
         jFrame1_listaDeDenuncias.getContentPane().add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
 
+        jFrame1_verDenunciaListada.setUndecorated(true);
+        jFrame1_verDenunciaListada.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton6.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jButton6.setForeground(new java.awt.Color(0, 102, 0));
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/voltar.png"))); // NOI18N
+        jButton6.setText("  VOLTAR");
+        jButton6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jButton6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jFrame1_verDenunciaListada.getContentPane().add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 770, 190, 50));
+
+        jLabel35.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/logoEcoWarriorsTelas.png"))); // NOI18N
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(1340, 580, 200, 200));
+
+        jLabel36.setFont(new java.awt.Font("Serif", 3, 36)); // NOI18N
+        jLabel36.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel36.setText("AVALIAR DENUNCIAS");
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 0, 400, 50));
+
+        jTextField1_DATA1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_DATA1.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_DATA1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jFrame1_verDenunciaListada.getContentPane().add(jTextField1_DATA1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 310, 220, 40));
+
+        jTextField1_tipoDaDenunciaSelecionada1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_tipoDaDenunciaSelecionada1.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_tipoDaDenunciaSelecionada1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jFrame1_verDenunciaListada.getContentPane().add(jTextField1_tipoDaDenunciaSelecionada1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 400, 580, 40));
+
+        jLabel37.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel37.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel37.setText("PONTO DE REFERÊNCIA");
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 360, 340, 30));
+
+        jLabel38.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel38.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel38.setText("RUA");
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 250, 60, 40));
+
+        jTextField1_PROTOCOLO1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_PROTOCOLO1.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_PROTOCOLO1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jFrame1_verDenunciaListada.getContentPane().add(jTextField1_PROTOCOLO1, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 590, 180, 40));
+
+        jTextField1_rua1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_rua1.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_rua1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jFrame1_verDenunciaListada.getContentPane().add(jTextField1_rua1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 250, 340, 40));
+
+        jTextField1_bairro1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_bairro1.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_bairro1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jFrame1_verDenunciaListada.getContentPane().add(jTextField1_bairro1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 200, 340, 40));
+
+        jLabel40.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel40.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel40.setText("BAIRRO");
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel40, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, 120, 40));
+
+        jLabel41.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel41.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel41.setText("PROTOCOLO");
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 550, 180, 40));
+
+        jLabel42.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel42.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel42.setText("CEP");
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, 70, 40));
+
+        jFormattedTextField1_CEP1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 3, true));
+        jFormattedTextField1_CEP1.setForeground(new java.awt.Color(0, 102, 0));
+        try {
+            jFormattedTextField1_CEP1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####-###")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jFormattedTextField1_CEP1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jFrame1_verDenunciaListada.getContentPane().add(jFormattedTextField1_CEP1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 150, 190, 40));
+
+        jTextArea1_descricaoDenuncia1.setEditable(false);
+        jTextArea1_descricaoDenuncia1.setColumns(20);
+        jTextArea1_descricaoDenuncia1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextArea1_descricaoDenuncia1.setForeground(new java.awt.Color(0, 102, 0));
+        jTextArea1_descricaoDenuncia1.setRows(5);
+        jTextArea1_descricaoDenuncia1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jScrollPane5.setViewportView(jTextArea1_descricaoDenuncia1);
+
+        jFrame1_verDenunciaListada.getContentPane().add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 170, 580, 130));
+
+        jTextField1_pontoReferencia1.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_pontoReferencia1.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_pontoReferencia1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jFrame1_verDenunciaListada.getContentPane().add(jTextField1_pontoReferencia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 390, 580, 40));
+
+        jTextField1_municipioo.setFont(new java.awt.Font("Serif", 3, 26)); // NOI18N
+        jTextField1_municipioo.setForeground(new java.awt.Color(0, 102, 0));
+        jTextField1_municipioo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jFrame1_verDenunciaListada.getContentPane().add(jTextField1_municipioo, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 300, 340, 40));
+
+        jTextArea1_avaliacaoAnalista1.setColumns(20);
+        jTextArea1_avaliacaoAnalista1.setFont(new java.awt.Font("Serif", 3, 24)); // NOI18N
+        jTextArea1_avaliacaoAnalista1.setForeground(new java.awt.Color(0, 102, 0));
+        jTextArea1_avaliacaoAnalista1.setRows(5);
+        jTextArea1_avaliacaoAnalista1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        jScrollPane6.setViewportView(jTextArea1_avaliacaoAnalista1);
+
+        jFrame1_verDenunciaListada.getContentPane().add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 530, 510, 150));
+
+        jLabel54.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "CONSIDERAÇÕES FINAIS DO ANALISTA", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 24), new java.awt.Color(0, 102, 0))); // NOI18N
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel54, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 480, 810, 240));
+
+        jLabel59.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel59.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel59.setText("DESCRIÇÃO");
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel59, new org.netbeans.lib.awtextra.AbsoluteConstraints(1000, 130, 170, 30));
+
+        jLabel65.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel65.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel65.setText("MUNICIPIO");
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel65, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 300, 160, 40));
+
+        jLabel49.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel49.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel49.setText("TIPO DA DENUNCIA SELECIONADA");
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 360, 480, -1));
+
+        jLabel53.setFont(new java.awt.Font("Serif", 3, 28)); // NOI18N
+        jLabel53.setForeground(new java.awt.Color(0, 102, 0));
+        jLabel53.setText("DATA DO OCORRIDO");
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel53, new org.netbeans.lib.awtextra.AbsoluteConstraints(800, 310, 290, -1));
+
+        jLabel43.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "ENDEREÇO DO INCIDENTE", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 24), new java.awt.Color(0, 102, 0))); // NOI18N
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 90, 620, 370));
+
+        jLabel52.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3), "DADOS DO INCIDENTE", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Serif", 3, 24), new java.awt.Color(0, 102, 0))); // NOI18N
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel52, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 90, 630, 370));
+
+        jLabel48.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/5333978.jpg"))); // NOI18N
+        jFrame1_verDenunciaListada.getContentPane().add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1600, 900));
+
+        jDialog1.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jDialog1.getContentPane().add(jlabel_imagensCarrossel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 500, 420));
+
+        jFrame1_carrosel.setPreferredSize(new java.awt.Dimension(400, 400));
+        jFrame1_carrosel.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jFrame1_carrosel.getContentPane().add(jlabel_imagensCarrossel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 400));
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -727,7 +957,7 @@ public class tGestorLogado extends javax.swing.JFrame {
         });
         getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 720, 370, 40));
 
-        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/novaDenuncia.png"))); // NOI18N
+        jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/ecowarriors/visao/icons/prestacao-de-contas.png"))); // NOI18N
         jLabel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 4));
         jLabel21.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel21.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -929,6 +1159,7 @@ public class tGestorLogado extends javax.swing.JFrame {
                 jFrame1_avaliarDenuncia.dispose();
 
             } else {
+                imprimirDadosNaGrid();
                 objetoDao.atualizarDenuncia(StatusDenuncia.EM_PROCESSAMENTO.toString(), protocolo);
                 jFrame1_avaliacaoFinalDenuncia.setBounds(WIDTH, WIDTH, 1600, 900);
                 jFrame1_avaliacaoFinalDenuncia.setLocationRelativeTo(null);
@@ -950,6 +1181,7 @@ public class tGestorLogado extends javax.swing.JFrame {
                 jFormattedTextField1_CEP.setText(resultSet.getString("cep"));
                 jTextField1_bairro.setText(resultSet.getString("bairro"));
                 jTextField1_rua.setText(resultSet.getString("rua"));
+                jTextField1_municipioo1.setText(resultSet.getString("municipio"));
                 jTextField1_pontoReferencia.setText(resultSet.getString("ponto_referencia"));
             }
 
@@ -988,7 +1220,49 @@ public class tGestorLogado extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jTable1_ListaDeDenunciasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1_ListaDeDenunciasMouseClicked
-        // TODO add your handling code here:
+        try {
+            protocoloGeral = "";
+            jTextField1_protocoloEscondido.setText(jTable1_ListaDeDenuncias.getValueAt(jTable1_ListaDeDenuncias.getSelectedRow(), 0).toString());
+            String protocolo = jTable1_ListaDeDenuncias.getValueAt(jTable1_ListaDeDenuncias.getSelectedRow(), 0).toString();
+            protocoloGeral = protocolo;
+
+            String queryEndereco = "select * from endereco where protocolo_denuncia = ?";
+            String queryDenuncia = "select * from denuncia where protocolo = ?";
+
+            PreparedStatement statment = conexao.prepareStatement(queryEndereco);
+            PreparedStatement statment2 = conexao.prepareStatement(queryDenuncia);
+
+            statment.setString(1, protocoloGeral);
+
+            ResultSet resultSet = statment.executeQuery();
+
+            while (resultSet.next()) {
+                jFormattedTextField1_CEP1.setText(resultSet.getString("cep"));
+                jTextField1_bairro1.setText(resultSet.getString("bairro"));
+                jTextField1_rua1.setText(resultSet.getString("rua"));
+                jTextField1_municipioo.setText(resultSet.getString("municipio"));
+                jTextField1_pontoReferencia1.setText(resultSet.getString("ponto_referencia"));
+
+            }
+
+            statment2.setString(1, protocoloGeral);
+            ResultSet rs = statment2.executeQuery();
+            while (rs.next()) {
+                jTextArea1_descricaoDenuncia1.setText(rs.getString("descricao_incidente"));
+                jTextField1_DATA1.setText(rs.getString("data"));
+                jTextField1_tipoDaDenunciaSelecionada1.setText(rs.getString("categoria"));
+                jTextField1_PROTOCOLO1.setText(rs.getString("protocolo"));
+                jTextArea1_avaliacaoAnalista1.setText(rs.getString("avaliacao_gestor"));
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(tGestorLogado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        jFrame1_verDenunciaListada.setBounds(WIDTH, WIDTH, 1600, 900);
+        jFrame1_verDenunciaListada.setLocationRelativeTo(null);
+        jFrame1_verDenunciaListada.setVisible(true);
+        jFrame1_listaDeDenuncias.dispose();
     }//GEN-LAST:event_jTable1_ListaDeDenunciasMouseClicked
 
     private void jRadioButton2_simAlterarDenunciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2_simAlterarDenunciaActionPerformed
@@ -1053,12 +1327,89 @@ public class tGestorLogado extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1_concluirActionPerformed
 
     private void jButton6_verImagensAnexoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6_verImagensAnexoActionPerformed
-        // TODO add your handling code here:
+
+        ImageCarousel carrosel = new ImageCarousel();
+        loadImages();
+
+        updateImage();
+
+        Timer timer = new Timer(2500, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nextImage();
+            }
+        });
+        timer.start();
+        add(jlabel_imagensCarrossel1);
+
+        jFrame1_carrosel.setBounds(WIDTH, WIDTH, 400, 400);
+        jFrame1_carrosel.setLocationRelativeTo(null);
+        jFrame1_carrosel.setVisible(true);
     }//GEN-LAST:event_jButton6_verImagensAnexoActionPerformed
 
+    private void loadImages() {
+        try {
+            String queryEndereco = "select * from imagens where id_protocolo = ?";
+            String caminhoImagem = "";
+            PreparedStatement statment = conexao.prepareStatement(queryEndereco);
+            statment.setString(1, jTextField1_PROTOCOLO.getText());
+            ResultSet resultSet = statment.executeQuery();
+            
+            while (resultSet.next()) {
+                caminhoImagem = resultSet.getString("caminho_imagem");
+            }
+            images = new ArrayList<>();
+            // Substitua "path/to/images" pelo caminho real para o diretório das imagens
+            File directory = new File(caminhoImagem);
+            
+            // Verifica se o diretório existe
+            if (directory.exists() && directory.isDirectory()) {
+                // Carrega todas as imagens do diretório
+                File[] files = directory.listFiles();
+                if (files != null) {
+                    for (File file : files) {
+                        try {
+                            Image image = ImageIO.read(file);
+                            ImageIcon icon = new ImageIcon(image);
+                            images.add(icon);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(tGestorLogado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void updateImage() {
+        if (!images.isEmpty()) {
+            ImageIcon currentImage = images.get(currentIndex);
+            jlabel_imagensCarrossel.setIcon(currentImage);
+        }
+    }
+
+    private void nextImage() {
+        if (!images.isEmpty()) {
+            currentIndex = (currentIndex + 1) % images.size();
+            updateImage();
+        }
+    }
     private void jComboBox_categoriaDenunciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_categoriaDenunciaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox_categoriaDenunciaActionPerformed
+
+    private void jTextField1_protocoloEscondidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1_protocoloEscondidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1_protocoloEscondidoActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        jFrame1_listaDeDenuncias.setBounds(WIDTH, WIDTH, 1600, 900);
+        jFrame1_listaDeDenuncias.setLocationRelativeTo(null);
+        jFrame1_listaDeDenuncias.setVisible(true);
+        jFrame1_verDenunciaListada.dispose();
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1109,15 +1460,20 @@ public class tGestorLogado extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton6_verImagensAnexo;
     private javax.swing.JComboBox<Categoria> jComboBox_categoriaDenuncia;
+    private javax.swing.JDialog jDialog1;
     private javax.swing.JFormattedTextField jFormattedTextField1_CEP;
+    private javax.swing.JFormattedTextField jFormattedTextField1_CEP1;
     private javax.swing.JFormattedTextField jFormattedTextField1_CPF;
     private javax.swing.JFormattedTextField jFormattedTextField1_Telefone;
     private javax.swing.JFrame jFrame1_avaliacaoFinalDenuncia;
     private javax.swing.JFrame jFrame1_avaliarDenuncia;
+    private javax.swing.JFrame jFrame1_carrosel;
     private javax.swing.JFrame jFrame1_listaDeDenuncias;
     private javax.swing.JFrame jFrame1_perfilGestor;
+    private javax.swing.JFrame jFrame1_verDenunciaListada;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1146,15 +1502,31 @@ public class tGestorLogado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel40;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel42;
+    private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
+    private javax.swing.JLabel jLabel53;
+    private javax.swing.JLabel jLabel54;
+    private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel65;
+    private javax.swing.JLabel jLabel66;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -1167,19 +1539,33 @@ public class tGestorLogado extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTable jTable1_Denuncias;
     private javax.swing.JTable jTable1_ListaDeDenuncias;
     private javax.swing.JTextArea jTextArea1_avaliacaoAnalista;
+    private javax.swing.JTextArea jTextArea1_avaliacaoAnalista1;
     private javax.swing.JTextArea jTextArea1_descricaoDenuncia;
+    private javax.swing.JTextArea jTextArea1_descricaoDenuncia1;
     private javax.swing.JTextField jTextField1_DATA;
+    private javax.swing.JTextField jTextField1_DATA1;
     private javax.swing.JTextField jTextField1_Email;
     private javax.swing.JTextField jTextField1_PROTOCOLO;
+    private javax.swing.JTextField jTextField1_PROTOCOLO1;
     private javax.swing.JTextField jTextField1_bairro;
+    private javax.swing.JTextField jTextField1_bairro1;
+    private javax.swing.JTextField jTextField1_municipioo;
+    private javax.swing.JTextField jTextField1_municipioo1;
     private javax.swing.JTextField jTextField1_nomeCompleto;
     private javax.swing.JTextField jTextField1_pontoReferencia;
+    private javax.swing.JTextField jTextField1_pontoReferencia1;
     private javax.swing.JTextField jTextField1_protocoloEscondido;
     private javax.swing.JTextField jTextField1_rua;
+    private javax.swing.JTextField jTextField1_rua1;
     private javax.swing.JTextField jTextField1_tipoDaDenunciaSelecionada;
+    private javax.swing.JTextField jTextField1_tipoDaDenunciaSelecionada1;
+    private javax.swing.JLabel jlabel_imagensCarrossel;
+    private javax.swing.JLabel jlabel_imagensCarrossel1;
     // End of variables declaration//GEN-END:variables
 
     private void carregarComboBox() {

@@ -96,7 +96,7 @@ public class DenunciaDao implements IDenunciaDao {
                 File[] arquivos = pasta.listFiles();
                 System.out.println(caminhoDaPasta);
                 for (File arquivo : arquivos) {
-                    String arquivoPasta = caminhoDaPasta + "/" + arquivo.getName();
+                    String arquivoPasta = caminhoDaPasta;
                     System.out.println(arquivo.getName());
                     stImagem = conexao.prepareStatement("insert into imagens (hash_imagem,caminho_imagem,id_protocolo)values(?,?,?)");
                     stImagem.setString(1, arquivo.getName());

@@ -222,7 +222,7 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
 
                     IUsuarioDao usuarioDao = new UsuarioDao();
                     usuarioDao.cadastrarUsuarios(usuario);
-                    JOptionPane.showMessageDialog(rootPane, "usuario Cadastrado!");
+                    JOptionPane.showMessageDialog(rootPane, "Usuario Cadastrado!");
                     limparCampos();
                 } else if (jTextField1_Senha.getText().isEmpty()) {
                     Usuarios usuario = new Usuarios(cpfFormatado, jPasswordField1.getText().toString(),
@@ -231,13 +231,15 @@ public class CadastrarDenunciantes extends javax.swing.JFrame {
 
                     IUsuarioDao usuarioDao = new UsuarioDao();
                     usuarioDao.cadastrarUsuarios(usuario);
-                    JOptionPane.showMessageDialog(rootPane, "usuario Cadastrado!");
+                    JOptionPane.showMessageDialog(rootPane, "Usuario Cadastrado!");
                     limparCampos();
                 }
             } catch (Exception ex) {
                 Logger.getLogger(CadastrarDenunciantes.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            tLoginDenunciantes denunciantes = new tLoginDenunciantes();
+            denunciantes.setVisible(true);
+            this.dispose();
         }
     }//GEN-LAST:event_jButton3_cadastrarActionPerformed
 
